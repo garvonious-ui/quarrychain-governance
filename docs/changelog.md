@@ -1,5 +1,54 @@
 # Changelog
 
+## 2026-07-20 — Session 1g: QuarryLabs admin console (Phase 5)
+
+### Built
+- `src/app/admin/page.tsx` + `AdminConsole.tsx` — three-column control panel:
+  global network parameters and pending candidacies (left), active validator
+  registry with status dots and `[Jail Node]` (middle), Emergency Action
+  Terminal (right). Not linked from the global nav, per the spec's scoping.
+- `src/components/admin/SlashingTerminal.tsx` — target selector, infraction
+  presets, penalty override slider, burn calculator, double-confirm modal.
+- `src/lib/slashing.ts` — presets, burn address, and the spec's burn disclosure.
+- `src/hooks/useAdminAccess.ts` — cosmetic admin gate (dev harness).
+- Mock provider now returns three pending candidacies.
+
+### Decisions
+- **Destructive confirmation requires typing the validator's name.** A second
+  click is too easy to fire from muscle memory, and slashing permanently burns
+  collateral and reduces token supply. Verified the guard rejects empty input,
+  wrong case, and partial matches.
+- **The confirmation modal restates the exact consequence** — burn amount,
+  infraction, penalty percentage, and destination burn address — rather than a
+  generic "are you sure?". Someone approving an irreversible action should see
+  the number they are approving.
+- **A penalty override is always labelled.** Moving the slider off the preset
+  surfaces a warning naming the preset value, so a non-standard penalty cannot
+  be applied without it being visible in the UI and in the confirm modal.
+- **Slashed validators leave the target dropdown**, so a node cannot be slashed
+  twice, and their `[Jail Node]` control disables.
+- **Network parameters are read-only.** Changing slashing policy is a governance
+  proposal, not an admin action — presenting editable fields would imply a power
+  the admin role should not have.
+- **The admin gate is stated as cosmetic on screen.** It reads a browser flag,
+  not a wallet. The harness bar says so, and `useAdminAccess` carries the
+  warning in code, because this surface will eventually front real destructive
+  operations.
+
+### Verified
+Gate blocks by default; harness reveals the console. Preset selection sets the
+penalty (double-sign → 30%) and the burn calculator computes correctly
+(500,000 × 30% = 150,000). Confirm button stays disabled for empty, wrong-case,
+and partial name input, and enables only on exact match. Executing updated the
+banner to "20/21 validators active · 150,000 QRY burned this session", marked
+the node Evicted, disabled its jail control, and removed it from the target
+list. Jail and Approve & Authorize both verified. Checked in both themes.
+Lint, typecheck, build clean.
+
+### Next
+- Phase 6: real wallet connect, live block height, candidate standings page,
+  responsive + accessibility audit.
+
 ## 2026-07-20 — Session 1f: Onboarding wizard + validator dashboard (Phase 4)
 
 ### Built — 4a, onboarding wizard

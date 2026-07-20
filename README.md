@@ -54,6 +54,7 @@ npx tsc --noEmit  # typecheck
 | `/voting` | Freeze → Select → Cast → Manage delegation wizard (Module B) |
 | `/onboarding` | "Become a Quarry Miner" wizard (Module C) |
 | `/miner` | Validator personal dashboard (Module C) |
+| `/admin` | QuarryLabs control panel (Module D) — not linked from nav |
 
 ## Architecture
 
@@ -92,9 +93,16 @@ make the network look larger.
 
 ## Security note
 
-UI-level gating in this app (the admin surface, the miner dashboard) is
-**cosmetic**. Hiding a button is not access control. Every privileged action must
-be authorised server-side when the backend lands.
+UI-level gating in this app (the admin surface at `/admin`, the miner dashboard
+at `/miner`) is **cosmetic** — it reads a browser flag, not a wallet. Hiding a
+button is not access control.
+
+The admin console performs destructive operations: jailing validators, slashing
+collateral, and permanently burning QRY supply. **Every one of those actions must
+be authorised server-side against the connected wallet** when the backend lands.
+The frontend only proposes an action; it must never be the thing that authorises
+it. Slashing percentages in `src/lib/slashing.ts` are policy and must be enforced
+independently by the backend, not trusted from the client.
 
 ## Outstanding
 

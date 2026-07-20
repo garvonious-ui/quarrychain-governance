@@ -72,11 +72,14 @@ the provider interface — see [integration.md](integration.md).
 - [ ] Replace the dev harness with real wallet identity (Phase 6)
 
 ## Phase 5 — Module D: QuarryLabs Admin Console
-- [ ] Wallet-gated admin surface + "PHASE 1 MANUAL CONTROL" badge
-- [ ] Pending candidate approvals (`[Approve & Authorize]`)
-- [ ] Emergency terminal: `[Jail Node]` / `[Slash & Evict]`
-- [ ] Infraction presets (2% / 30% / 100%) + custom penalty slider
-- [ ] Dynamic burn calculator + double-confirm destructive action
+- [x] Gated admin surface (cosmetic harness) + "PHASE 1 MANUAL CONTROL" badge
+- [x] Pending candidate approvals (`[Approve & Authorize]`)
+- [x] Emergency terminal: `[Jail Node]` / `[Slash & Evict]`
+- [x] Infraction presets (2% / 30% / 100%) + custom penalty slider with
+      override warning
+- [x] Dynamic burn calculator + type-to-confirm destructive action
+- [x] Status dots (producing / missed / jailed / evicted)
+- [ ] Replace cosmetic gate with real wallet + server-side authorisation (Phase 6)
 
 ## Phase 6 — Real Seams & Polish
 - [ ] RainbowKit wallet connect (role gating: voter / candidate / miner / admin)

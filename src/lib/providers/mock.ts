@@ -42,6 +42,41 @@ const MOCK_PROPOSALS: Proposal[] = [
   },
 ];
 
+/** Candidacies awaiting Phase-1 manual authorisation in the admin console. */
+const MOCK_PENDING_APPLICATIONS: ValidatorApplication[] = [
+  {
+    minerName: "Northstar Validation",
+    website: "https://northstar.example",
+    description:
+      "Independent operator running redundant capacity across two EU regions.",
+    socials: { x: "@northstarval" },
+    host: "IONOS",
+    nodePeerId: "12D3KooWNorthstarPeerIdExample",
+    consensusPubkey: "quarryvalconspub1zcjduepqnorthstar",
+    selfBondQry: 500_000,
+  },
+  {
+    minerName: "Cinder Block Labs",
+    website: "https://cinderblock.example",
+    description: "Infrastructure co-op focused on low-cost bare-metal validation.",
+    socials: { discord: "discord.gg/cinderblock" },
+    host: "BareMetal",
+    nodePeerId: "12D3KooWCinderBlockPeerIdExample",
+    consensusPubkey: "quarryvalconspub1zcjduepqcinder",
+    selfBondQry: 500_000,
+  },
+  {
+    minerName: "Harbor Point Staking",
+    website: "https://harborpoint.example",
+    description: "Regional staking provider onboarding community delegators.",
+    socials: {},
+    host: "AWS",
+    nodePeerId: "12D3KooWHarborPointPeerIdExample",
+    consensusPubkey: "quarryvalconspub1zcjduepqharbor",
+    selfBondQry: 500_000,
+  },
+];
+
 function hostBreakdown(validators: Validator[]): Record<ServerHost, number> {
   const counts: Record<ServerHost, number> = { AWS: 0, IONOS: 0, BareMetal: 0 };
   for (const v of validators) counts[v.host] += 1;
@@ -131,7 +166,7 @@ export function createMockProvider(): DataProvider {
     },
 
     admin: {
-      listPendingApplications: () => latency([]),
+      listPendingApplications: () => latency(MOCK_PENDING_APPLICATIONS),
       approveApplication: () => latency(undefined, 400),
       jail: () => latency(undefined, 400),
       slashAndEvict: () => latency(undefined, 600),
