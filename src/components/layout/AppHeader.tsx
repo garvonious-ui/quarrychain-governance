@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 /**
  * Sticky global header.
@@ -43,7 +44,8 @@ export function AppHeader() {
           </span>
         </Link>
 
-        <nav className="flex gap-1 rounded-lg bg-well p-1">
+        <div className="flex items-center gap-3">
+          <nav className="flex gap-1 rounded-lg bg-well p-1">
           {NAV.map(({ label, href }) => {
             const active = pathname === href || pathname.startsWith(`${href}/`);
             return (
@@ -61,7 +63,9 @@ export function AppHeader() {
               </Link>
             );
           })}
-        </nav>
+          </nav>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );

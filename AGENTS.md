@@ -47,9 +47,17 @@ Sibling repos: `quarrychain-ico` (token sale — handed off), `quarrychain-web`
 - Public: EVM JSON-RPC + Blockscout. Not public: Cosmos REST, CometBFT RPC.
 
 ### Design
-- **Light mode only.** Ground `#F8F9FA`, cards white. Never add a dark variant —
-  the `#212529` accent panels assume a light ground.
-- **Brand lockup:** "Quarry" `#007BFF`, "Chain" `#000000`. Always split.
+- **Two themes, toggled via a `dark` class on `<html>`.** Light is the Phase 6
+  spec's fintech palette; dark inherits quarrychain-web's tokens (`#08080f` /
+  `#0f1019` / `#161822`) so the suite matches the main site. The spec says
+  "light only" — Lou overrode that on 2026-07-20; the toggle is a requirement.
+- **The DOM class is the source of truth for theme**, not React state. Read it
+  via `useTheme()` (`useSyncExternalStore`). Never mirror it into state — an
+  inline script sets it pre-hydration, so state would start stale.
+- **Brand blue differs per theme:** `#007BFF` light, `#3b82f6` dark. The spec
+  blue is harsh on a near-black ground. Both are correct; use the token.
+- **Brand lockup:** "Quarry" brand blue, "Chain" `text-ink` (black on light,
+  near-white on dark). Always split.
 - Use the `@theme` tokens in `globals.css` (`bg-card`, `text-muted`,
   `text-brand`…). Never hardcode hex in components.
 - Panels use the shared `Card` primitive: rounded-xl, hairline border, soft shadow.

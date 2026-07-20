@@ -3,55 +3,124 @@
 /*
  * QuarryChain DPoS Governance Suite — design tokens
  *
- * Palette pinned to the Phase 6 spec. Light mode ONLY: this is a "clean
- * fintech" surface, not the dark ICO launchpad aesthetic. Do not add a
- * prefers-color-scheme dark block — the #212529 accent panels and the
- * spec's contrast ratios assume a light ground.
+ * Two themes, toggled via a `dark` class on <html>:
+ *
+ *   LIGHT — the Phase 6 spec's "clean fintech" palette (#007BFF brand,
+ *           #F8F9FA ground). This is what the spec describes.
+ *   DARK  — inherited from quarrychain-web so the suite matches the main
+ *           site: #08080f / #0f1019 / #161822 grounds, softer #3b82f6 brand.
+ *
+ * Brand blue deliberately differs per theme. The spec's #007BFF is punchy on
+ * white but harsh and over-saturated on a near-black ground, so dark mode uses
+ * the marketing site's #3b82f6 (and #60a5fa for hover/glow) instead.
+ *
+ * Tokens are semantic (surface / card / border / ink…), so components never
+ * need to know which theme is active — they just use the token.
  */
-@theme {
-  /* Ground + chrome */
-  --color-surface: #f8f9fa;
-  --color-card: #ffffff;
-  --color-border: #e9ecef;
-  --color-border-strong: #ced4da;
-  --color-divider: #dee2e6;
-  --color-well: #f1f3f5;
 
-  /* Brand — "Quarry" blue / "Chain" black */
-  --color-brand: #007bff;
-  --color-brand-hover: #0056b3;
-  --color-brand-tint: #e7f1ff;
+:root {
+  /* Ground + chrome */
+  --surface: #f8f9fa;
+  --card: #ffffff;
+  --border: #e9ecef;
+  --border-strong: #ced4da;
+  --divider: #dee2e6;
+  --well: #f1f3f5;
+
+  /* Brand */
+  --brand: #007bff;
+  --brand-hover: #0056b3;
+  --brand-tint: #e7f1ff;
 
   /* Ink ramp */
-  --color-ink: #000000;
-  --color-heading: #212529;
-  --color-body: #495057;
-  --color-muted: #6c757d;
-  --color-faint: #adb5bd;
+  --ink: #000000;
+  --heading: #212529;
+  --body: #495057;
+  --muted: #6c757d;
+  --faint: #adb5bd;
 
   /* Status */
-  --color-success: #198754;
-  --color-success-tint: #d1e7dd;
-  --color-success-deep: #0f5132;
-  --color-danger: #dc3545;
-  --color-danger-hover: #bb2d3b;
-  --color-warning: #ffc107;
-  --color-warning-tint: #fff3cd;
+  --success: #198754;
+  --success-tint: #d1e7dd;
+  --success-deep: #0f5132;
+  --danger: #dc3545;
+  --danger-hover: #bb2d3b;
+  --warning: #ffc107;
+  --warning-tint: #fff3cd;
+}
 
-  /* Type */
+.dark {
+  /* Ground + chrome — quarrychain-web values */
+  --surface: #08080f;
+  --card: #0f1019;
+  --border: #1e2130;
+  --border-strong: #2a2e40;
+  --divider: #1e2130;
+  --well: #161822;
+
+  /* Brand */
+  --brand: #3b82f6;
+  --brand-hover: #60a5fa;
+  --brand-tint: rgba(59, 130, 246, 0.15);
+
+  /* Ink ramp */
+  --ink: #f1f5f9;
+  --heading: #f1f5f9;
+  --body: #94a3b8;
+  --muted: #94a3b8;
+  --faint: #475569;
+
+  /* Status — success-deep reads as TEXT on success-tint, so it inverts to a
+     light green on dark rather than staying a deep green. */
+  --success: #22c55e;
+  --success-tint: rgba(34, 197, 94, 0.15);
+  --success-deep: #4ade80;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --warning: #fbbf24;
+  --warning-tint: rgba(251, 191, 36, 0.15);
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-divider: var(--divider);
+  --color-well: var(--well);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-tint: var(--brand-tint);
+
+  --color-ink: var(--ink);
+  --color-heading: var(--heading);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+
+  --color-success: var(--success);
+  --color-success-tint: var(--success-tint);
+  --color-success-deep: var(--success-deep);
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-warning: var(--warning);
+  --color-warning-tint: var(--warning-tint);
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
 body {
-  background: var(--color-surface);
-  color: var(--color-ink);
+  background: var(--surface);
+  color: var(--ink);
 }
 
-/* Row flash fired when a validator commits a block. */
+/* Row flash fired when a validator commits a block. Uses the themed tint so
+   it reads correctly on both grounds. */
 @keyframes block-flash {
   0% {
-    background-color: var(--color-brand-tint);
+    background-color: var(--brand-tint);
   }
   100% {
     background-color: transparent;

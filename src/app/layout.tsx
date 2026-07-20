@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { AppHeader } from "@/components/layout/AppHeader";
+import { THEME_INIT_SCRIPT } from "@/hooks/useTheme";
 import "./globals.css";
 
 const inter = Inter({
@@ -28,8 +29,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // The theme script mutates <html> before hydration, so the server-rendered
+      // class list intentionally won't match the client's.
+      suppressHydrationWarning
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
+      <head>
+        {/* Runs before first paint to avoid a flash of the wrong theme. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col bg-surface font-sans">
         <AppHeader />
         <main className="mx-auto w-full max-w-[1600px] flex-1 space-y-8 p-6 lg:p-8">

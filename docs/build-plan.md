@@ -20,6 +20,13 @@ the provider interface — see [integration.md](integration.md).
 - [x] `docs/integration.md` handoff guide
 - [ ] Brand assets dropped into `public/assets/` (blocked — awaiting files)
 
+## Theming (added 2026-07-20, overrides the spec's "light only")
+- [x] Semantic tokens split into `:root` (light) / `.dark` (dark)
+- [x] Dark palette inherited from quarrychain-web
+- [x] Header toggle, persisted to localStorage, defaults to OS preference
+- [x] Pre-paint init script — no flash of the wrong theme
+- [ ] Re-audit each new module in both themes as it ships
+
 ## Phase 1 — Module A: Governance Dashboard
 - [x] Network topology widget (real IONOS nodes only; AWS shown as supported, not live)
 - [x] Sortable registry table (all 12 columns per spec)

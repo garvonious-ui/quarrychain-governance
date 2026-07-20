@@ -1,5 +1,52 @@
 # Changelog
 
+## 2026-07-20 — Session 1c: Dark mode + theme toggle
+
+### Built
+- `src/app/globals.css` restructured: semantic tokens now live as raw CSS vars in
+  `:root` (light) and `.dark` (dark), with `@theme inline` mapping them to Tailwind
+  utilities. Components were already token-based, so none needed changing.
+- `src/hooks/useTheme.ts` — theme state via `useSyncExternalStore` over the `<html>`
+  class, plus `THEME_INIT_SCRIPT` for pre-paint application.
+- `src/components/theme/ThemeToggle.tsx` — header toggle, inlined sun/moon SVGs.
+
+### Decisions
+- **Lou overrode the spec's "light mode only" rule.** The Phase 6 spec explicitly
+  describes a light fintech surface, and Session 1 hard-coded that as a project
+  rule. Dark mode is now a requirement; AGENTS.md updated so the old rule doesn't
+  get re-applied later.
+- **quarrychain-web has no theme toggle** — it is permanently dark (`#08080f`, no
+  next-themes, no `.dark` class). So there was no existing toggle to match; the
+  request was interpreted as "dark that looks like the main site, plus a toggle."
+  Dark mode adopts quarrychain-web's actual token values.
+- **Brand blue differs per theme:** `#007BFF` (spec) on light, `#3b82f6`
+  (quarrychain-web) on dark. The spec blue is punchy on white but harsh and
+  over-saturated on near-black.
+- **`success-deep` inverts.** It is used as text on `success-tint`, so it goes from
+  a deep green on light to a light green on dark rather than staying fixed.
+- **The DOM class is the source of truth, not React state.** The init script sets
+  the class before hydration, so any React state would start stale.
+  `useSyncExternalStore` subscribes to the class attribute directly.
+- **Hand-rolled instead of next-themes.** ~70 lines and no dependency, which
+  matters for a handoff deliverable.
+
+### Bugs / Gotchas
+- First implementation mirrored the DOM class into state and reconciled in an
+  effect — caught by `react-hooks/set-state-in-effect`. The lint rule was right;
+  `useSyncExternalStore` is the correct primitive.
+- **Next's dev image cache served a deleted file for hours.** A temporary test PNG
+  kept rendering after deletion — the static route 404'd while
+  `/_next/image?url=…` still returned 200 from `.next/dev/cache/images` (4h TTL).
+  Purging that directory fixed it. Worth knowing before chasing a phantom asset.
+- That stale cache incidentally proved the avatar fade-in works with a real asset
+  (`naturalWidth: 1, opacity: 1, complete: true`), which the earlier test could not
+  confirm.
+
+### Verified
+Both themes rendered and screenshotted. Toggle flips live; the choice survives a
+full reload even against a conflicting OS preference, confirming persistence.
+Lint, typecheck, and build clean.
+
 ## 2026-07-20 — Session 1b: Module A governance dashboard (Phase 1)
 
 ### Built
