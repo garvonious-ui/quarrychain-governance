@@ -7,11 +7,15 @@ import type { ServerHost, Validator } from "@/lib/types";
 /**
  * Multi-cloud topology widget.
  *
- * HONESTY RULE: only validators flagged isLiveNode are rendered as running
- * infrastructure. Today that is the two IONOS nodes. Every other host is shown
- * as an *onboarding target*, not as a live cluster — the spec's reference code
- * hardcoded "3 Nodes on AWS", which would be a fabrication. Do not "fill out"
- * this widget with mock clusters to make the map look busier.
+ * HONESTY RULE: the "producing blocks" count comes from the REAL chain
+ * (distinct proposers observed via Blockscout), not from mock flags. An earlier
+ * version counted hardcoded `isLiveNode` values, which went stale as the
+ * validator set grew from 2 to 5 — the widget then understated the network.
+ * Derive from the chain; do not reintroduce a hardcoded count.
+ *
+ * Hosts with no live nodes render as *onboarding targets*, never as live
+ * clusters. The spec's reference code hardcoded "3 Nodes on AWS", which would
+ * be a fabrication. Do not "fill out" this widget to make the map look busier.
  */
 
 const HOST_LABEL: Record<ServerHost, string> = {
@@ -42,17 +46,26 @@ export function NetworkTopology({
   validators,
   height,
   isLiveData,
+  liveProposerCount,
 }: {
   validators: Validator[];
   height: number;
   isLiveData: boolean;
+  /**
+   * Distinct block proposers observed on the real chain. Authoritative when
+   * present — an earlier version derived this from hardcoded `isLiveNode`
+   * flags, which silently went stale as the validator set grew from 2 to 5 and
+   * left the widget understating the network.
+   */
+  liveProposerCount: number | null;
 }) {
   const clusters = liveClusters(validators);
   const liveHosts = new Set(clusters.map((c) => c.host));
   const onboardingTargets = (
     Object.keys(HOST_LABEL) as ServerHost[]
   ).filter((h) => !liveHosts.has(h));
-  const totalLiveNodes = clusters.reduce((sum, c) => sum + c.nodes, 0);
+  const totalLiveNodes =
+    liveProposerCount ?? clusters.reduce((sum, c) => sum + c.nodes, 0);
 
   return (
     <div className="rounded-xl border border-border bg-card shadow-sm">
@@ -88,7 +101,11 @@ export function NetworkTopology({
             {totalLiveNodes} node{totalLiveNodes === 1 ? "" : "s"} producing blocks
           </span>
           <span className="rounded bg-well px-2 py-1 font-mono text-[11px] text-body">
-            {isLiveData ? "live RPC" : "simulated telemetry"}
+            {liveProposerCount !== null
+              ? "live chain"
+              : isLiveData
+                ? "live RPC"
+                : "simulated telemetry"}
           </span>
         </div>
 

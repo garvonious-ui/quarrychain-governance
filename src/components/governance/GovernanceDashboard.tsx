@@ -14,9 +14,12 @@ import type { NetworkStatus, Validator } from "@/lib/types";
 export function GovernanceDashboard({
   initialValidators,
   status,
+  liveProposerCount,
 }: {
   initialValidators: Validator[];
   status: NetworkStatus;
+  /** Real distinct proposers from the chain; null if the indexer was unreachable. */
+  liveProposerCount: number | null;
 }) {
   const { validators, height, flashId } = useNodeTelemetry(
     initialValidators,
@@ -29,6 +32,7 @@ export function GovernanceDashboard({
         validators={validators}
         height={height}
         isLiveData={status.isLive}
+        liveProposerCount={liveProposerCount}
       />
       <ValidatorTable
         validators={validators}

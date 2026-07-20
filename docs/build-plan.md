@@ -81,12 +81,20 @@ the provider interface — see [integration.md](integration.md).
 - [x] Status dots (producing / missed / jailed / evicted)
 - [ ] Replace cosmetic gate with real wallet + server-side authorisation (Phase 6)
 
-## Explorer reskin (added 2026-07-20 — not in the reference docs)
-- [x] Confirmed the explorer runs the modern Blockscout Next.js frontend, so
-      theming is env config rather than a fork
-- [x] `docs/explorer-theme.md` — drop-in config for the Blockscout deployment
-- [ ] Applied by whoever controls the Blockscout deployment (infra, not this repo)
-- [ ] Light/dark logo + icon variants (blocked on brand assets)
+## Explorer (added 2026-07-20 — not in the reference docs)
+Scope escalated from "theme Blockscout" to "build a custom explorer" at the
+project owner's request: it needed to look like the ecosystem, not a recoloured
+third-party app.
+- [x] Live Blockscout REST client (`src/lib/explorer/blockscout.ts`)
+- [x] Overview: stats, latest blocks, latest transactions, search
+- [x] Block / transaction / address detail pages
+- [x] Block and transaction list pages
+- [x] Explorer added to the primary nav
+- [x] Governance topology + height now read the real chain instead of constants
+- [ ] Pagination beyond the API's default page
+- [ ] Token transfers / contract verification views
+- `docs/explorer-theme.md` retained — still useful if they also want the
+  upstream Blockscout instance brand-matched
 
 ## Governance Transition diagram (recovered from an embedded image)
 - [x] Phase 1/2/3 maturity stepper with per-phase security + governance model

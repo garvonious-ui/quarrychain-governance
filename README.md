@@ -55,6 +55,9 @@ npx tsc --noEmit  # typecheck
 | `/onboarding` | "Become a Quarry Miner" wizard (Module C) |
 | `/miner` | Validator personal dashboard (Module C) |
 | `/admin` | QuarryLabs control panel (Module D) — not linked from nav |
+| `/explorer` | Block explorer — **live chain data**, no mock layer |
+| `/explorer/blocks`, `/explorer/txs` | Block and transaction lists |
+| `/explorer/block/[height]`, `/explorer/tx/[hash]`, `/explorer/address/[hash]` | Detail pages |
 
 ## Architecture
 
@@ -78,7 +81,10 @@ Being precise about this matters — parts of this app look live and are not.
   count. It reports genuine failures and never fakes a pass.
 - Chain constants (chain-id 1129, RPC and explorer URLs) — verified against the
   live testnet.
-- The two IONOS validator addresses flagged `isLiveNode` — real block proposers.
+- **The entire `/explorer` section.** Blocks, transactions, addresses, and search
+  are served live from the QuarryChain Blockscout API server-side. No mock layer.
+- The count of validators actually producing blocks on the governance page, and
+  the chain height that seeds the telemetry ticker — both read from the chain.
 
 **Simulated:**
 - The validator registry, vote weights, APY, rewards, latency and uptime drift.
@@ -87,9 +93,11 @@ Being precise about this matters — parts of this app look live and are not.
 - Validator identity on `/miner`, via a deliberately loud dev harness bar.
 
 `NetworkStatus.isLive` tells the UI which mode it is in, and the UI says so on
-screen. **Please preserve that.** The topology widget in particular only renders
-nodes that actually exist — `Validator.isLiveNode` should never be flipped on to
-make the network look larger.
+screen. **Please preserve that.** The topology widget only renders nodes that
+actually exist, and its "producing blocks" count is derived from real proposers
+observed on chain — an earlier version used hardcoded flags and silently went
+stale as the validator set grew from 2 to 5, understating the network. Derive
+from the chain; don't reintroduce a hardcoded count.
 
 ## Security note
 

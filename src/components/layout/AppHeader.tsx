@@ -14,9 +14,15 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
  * absent the wordmark stands on its own rather than showing a broken image.
  */
 
+/*
+ * The spec's nav is two tabs. Explorer was added later at the project owner's
+ * request — it is a primary surface, not a sub-page, so it belongs in the tab
+ * group rather than tucked away.
+ */
 const NAV = [
   { label: "Governance", href: "/governance" },
   { label: "Voting", href: "/voting" },
+  { label: "Explorer", href: "/explorer" },
 ] as const;
 
 export function AppHeader() {
