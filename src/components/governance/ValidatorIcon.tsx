@@ -6,10 +6,23 @@ import { useState } from "react";
 /**
  * Validator avatar with a graceful fallback.
  *
- * Brand assets have not been delivered yet, so every icon currently falls back
- * to initials. That is intentional — a missing PNG must never render as a
- * broken image. Drop files into public/assets (see the README there) and they
- * light up with no code change.
+ * The initials are ALWAYS rendered, and the logo is layered on top of them
+ * rather than swapped in for them. This matters: an earlier version rendered
+ * the <img> instead of the initials and only fell back once onError fired,
+ * which flashed an empty square on every page load for any validator whose
+ * asset was missing. Layering means the worst case is "initials stay visible"
+ * instead of "empty box until the 404 resolves".
+ *
+ * The image carries its own background so a logo with transparency doesn't
+ * let the initials show through behind it — which means it would also mask the
+ * initials while still loading. So it stays at opacity-0 until onLoad fires.
+ * That is deliberately fail-closed: if a logo never loads we show initials
+ * forever, which is the right outcome given assets are currently missing.
+ * Verified against the dev server: present assets return 200 through the image
+ * optimizer, missing ones return 400 and trip onError.
+ *
+ * Brand assets have not been delivered yet — drop files into public/assets
+ * (see the README there) and they light up with no code change.
  */
 
 function initialsFor(name: string): string {
@@ -31,28 +44,31 @@ export function ValidatorIcon({
   size?: number;
 }) {
   const [failed, setFailed] = useState(false);
-  const showFallback = !asset || failed;
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <span
-      className="inline-flex shrink-0 items-center justify-center overflow-hidden rounded-md border border-border-strong bg-well"
+      className="relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-md border border-border-strong bg-well"
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
-      {showFallback ? (
-        <span
-          className="font-bold text-body"
-          style={{ fontSize: Math.max(8, size * 0.36) }}
-        >
-          {initialsFor(name)}
-        </span>
-      ) : (
+      <span
+        className="font-bold text-body"
+        style={{ fontSize: Math.max(8, Math.round(size * 0.36)) }}
+      >
+        {initialsFor(name)}
+      </span>
+
+      {asset && !failed && (
         <Image
           src={`/assets/${asset}`}
           alt=""
           width={size}
           height={size}
-          className="h-full w-full object-contain"
+          className={`absolute inset-0 h-full w-full bg-well object-contain transition-opacity duration-200 ${
+            loaded ? "opacity-100" : "opacity-0"
+          }`}
+          onLoad={() => setLoaded(true)}
           onError={() => setFailed(true)}
         />
       )}
