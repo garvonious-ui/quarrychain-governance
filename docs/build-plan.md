@@ -21,11 +21,11 @@ the provider interface — see [integration.md](integration.md).
 - [ ] Brand assets dropped into `public/assets/` (blocked — awaiting files)
 
 ## Phase 1 — Module A: Governance Dashboard
-- [ ] Network topology widget (real IONOS nodes only; AWS shown as supported, not live)
-- [ ] Sortable registry table (all 12 columns per spec)
-- [ ] `useNodeTelemetry` hook — block-height ticker + per-row green flash
-- [ ] Latency / uptime micro-fluctuation simulation
-- [ ] Featured miners pinned to top with icon assets
+- [x] Network topology widget (real IONOS nodes only; AWS shown as supported, not live)
+- [x] Sortable registry table (all 12 columns per spec)
+- [x] `useNodeTelemetry` hook — block-height ticker + per-row green flash
+- [x] Latency / uptime micro-fluctuation simulation
+- [x] Featured miners emphasised, with icon assets + initials fallback
 
 ## Phase 2 — Module B: Voting & Yield Portal
 - [ ] 4-step wizard: Freeze → Select → Cast → Manage

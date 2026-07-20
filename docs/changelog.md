@@ -1,5 +1,54 @@
 # Changelog
 
+## 2026-07-20 — Session 1b: Module A governance dashboard (Phase 1)
+
+### Built
+- `src/hooks/useNodeTelemetry.ts` — subscribes to the provider's height stream,
+  advances the tip, picks one validator per block to have produced it (flash +
+  `blocksProduced++`), and applies the spec's telemetry deviations
+  (latency ±2ms, uptime ±0.01%). Height comes from the provider, so a live
+  provider starts driving real chain progress with no change to this hook.
+- `src/components/governance/NetworkTopology.tsx` — multi-cloud health widget.
+- `src/components/governance/ValidatorTable.tsx` — the 12-column sortable
+  registry with per-row block flash and derived "Latest Block".
+- `src/components/governance/ValidatorIcon.tsx` — avatar with initials fallback.
+- `src/components/governance/GovernanceDashboard.tsx` — client shell; the page
+  stays a server component and fetches the initial snapshot through the provider.
+
+### Decisions
+- **Topology shows only real infrastructure.** The spec's reference code hardcodes
+  "3 Nodes on AWS / 2 Nodes on IONOS" and named clusters in West Virginia and
+  Frankfurt. Only the two IONOS nodes actually exist, so the widget renders one
+  live cluster and presents AWS + Bare Metal as *onboarding targets* ("no live
+  nodes — supported onboarding target"). This keeps the demo honest and doubles
+  as a funnel into the onboarding flow, which is the module Lou cares most about.
+- **Sorting does not re-sort on every block.** `height` is deliberately excluded
+  from the sort memo; otherwise the table would reshuffle every 3.6s and be
+  unusable. Ordering by "Latest Block" tracks rank anyway.
+- **Per-validator block lag is stable (`rank % 3`), not random.** A random offset
+  would make every row's height jitter on each render, which reads as broken
+  rather than as a live network mid-round.
+- **Default sort direction depends on the column** — ascending for rank/name,
+  descending for every numeric. Clicking "APY" should show the best yield first.
+- **Flash is CSS-driven**, so the global `prefers-reduced-motion` rule neutralises
+  it without any conditional logic in the hook.
+
+### Bugs / Gotchas
+- Validator names wrapped onto three lines and crushed the Name column; fixed
+  with `whitespace-nowrap` on that cell. The table scrolls horizontally at narrow
+  widths rather than compressing — correct for a 12-column data grid.
+- `pnpm dev` landed on **port 3001**; 3000 was already occupied.
+
+### Verified
+Lint, typecheck, and production build all clean. Confirmed in the browser: 21
+validators render, sorting works (Votes ▼ ordered correctly), the height ticker
+advances, `blocksProduced` increments off the seed values, and icon fallbacks
+render as initials while brand assets are outstanding.
+
+### Next
+- Phase 2 (Module B): the 4-step Freeze → Select → Cast → Manage voting wizard,
+  live earnings odometer, auto-compounding toggle.
+
 ## 2026-07-20 — Session 1: Project scaffold + provider seam (Phase 0)
 
 ### Built

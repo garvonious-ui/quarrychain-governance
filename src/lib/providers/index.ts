@@ -21,7 +21,6 @@ export function getProvider(): DataProvider {
   const mode = process.env.NEXT_PUBLIC_DATA_MODE ?? "mock";
 
   if (mode === "live") {
-    // eslint-disable-next-line no-console
     console.warn(
       "[quarrychain] NEXT_PUBLIC_DATA_MODE=live but no live provider is implemented yet — falling back to mock. See docs/integration.md.",
     );
