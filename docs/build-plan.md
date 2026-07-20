@@ -25,7 +25,7 @@ the provider interface — see [integration.md](integration.md).
 - [x] Dark palette inherited from quarrychain-web
 - [x] Header toggle, persisted to localStorage, defaults to OS preference
 - [x] Pre-paint init script — no flash of the wrong theme
-- [ ] Re-audit each new module in both themes as it ships
+- [x] Re-audit each new module in both themes as it ships
 
 ## Phase 1 — Module A: Governance Dashboard
 - [x] Network topology widget (real IONOS nodes only; AWS shown as supported, not live)
@@ -106,8 +106,8 @@ third-party app.
 - [ ] RainbowKit wallet connect (role gating: voter / candidate / miner / admin)
 - [ ] Live block height from public RPC (`NEXT_PUBLIC_DATA_MODE=live` partial)
 - [ ] Candidate standings page
-- [ ] Responsive + reduced-motion audit
-- [ ] Accessibility pass on tables, modals, and the wizard
+- [x] Responsive + reduced-motion audit
+- [x] Accessibility pass on tables, modals, and the wizard
 
 ## Open Items
 1. Brand assets — logo + 3 featured icons + 2 hero graphics (owed by the project owner)

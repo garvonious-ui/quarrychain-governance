@@ -137,9 +137,17 @@ export function MinerDashboard({
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[200px_1fr]">
+      {/*
+        grid-cols-1 (not implicit auto) so the mobile column is minmax(0,1fr)
+        and can shrink below its content — without it, the nav's horizontal
+        scroll row forces the whole grid wider than the viewport.
+      */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[200px_1fr]">
         {/* Sidebar nav */}
-        <nav aria-label="Validator workspace" className="lg:sticky lg:top-24 lg:self-start">
+        <nav
+          aria-label="Validator workspace"
+          className="min-w-0 lg:sticky lg:top-24 lg:self-start"
+        >
           <ul className="flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible">
             {SECTIONS.map((s) => (
               <li key={s}>
@@ -147,7 +155,10 @@ export function MinerDashboard({
                   type="button"
                   onClick={() => setSection(s)}
                   aria-current={section === s ? "page" : undefined}
-                  className={`w-full whitespace-nowrap rounded-lg px-3 py-2 text-left text-xs font-semibold transition-colors ${
+                  // w-full only in the desktop vertical column; on mobile these
+                  // are auto-width pills in a horizontal scroll row, where
+                  // w-full would make each one 100% wide and overflow the page.
+                  className={`whitespace-nowrap rounded-lg px-3 py-2 text-left text-xs font-semibold transition-colors lg:w-full ${
                     section === s
                       ? "bg-brand-tint text-brand"
                       : "text-muted hover:bg-well hover:text-ink"

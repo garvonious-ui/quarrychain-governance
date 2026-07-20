@@ -1,5 +1,47 @@
 # Changelog
 
+## 2026-07-20 — Session 1i: Responsive + accessibility audit
+
+### Fixed — mobile horizontal overflow
+Audited every route at a real 390px viewport (measuring body scrollWidth, not
+eyeballing screenshots). Two routes pushed the page sideways:
+- **Header** (114px overflow): three nav tabs plus the toggle no longer fit one
+  row once Explorer was added. Restructured to a wrapping layout — logo and
+  toggle on the top row, nav drops to its own full-width scrollable row below on
+  narrow screens, single row at sm+.
+- **Miner dashboard** (201px overflow): the sidebar's horizontal scroll row
+  forced its grid column to min-content width. Root cause was the mobile grid
+  having no explicit `grid-cols-1`, so the column couldn't shrink below content.
+  Added `grid-cols-1` (minmax(0,1fr)) + `min-w-0` on the nav, and scoped the
+  pills' `w-full` to `lg:` so they aren't full-width in the horizontal row.
+
+All 10 checked routes now report 0 body overflow at 390px, verified per-section
+on the miner dashboard.
+
+### Fixed — slash confirmation modal a11y
+The most dangerous surface had a broken dialog pattern: focus was never moved
+into it, Escape didn't close it, and there was no focus trap — a keyboard or
+screen-reader user could be stranded outside an irreversible confirmation.
+- New `useDialogA11y` hook: moves focus to the first field on open, traps Tab
+  within the dialog, closes on Escape, and restores focus to the trigger on
+  close. Applied to the slashing modal.
+- Backdrop click cancels; clicks inside the card don't (stopPropagation).
+
+Verified in-browser: focus lands on the type-to-confirm input, Escape closes and
+returns focus to the Execute button, card clicks keep it open, and the
+type-to-confirm guard still gates the burn.
+
+### Verified — automated a11y basics
+Zero images missing alt, zero unnamed buttons, zero unlabelled form controls,
+zero unnamed links, single h1 per page. The `prefers-reduced-motion` guard
+covers the live tickers. Lint, typecheck, build clean.
+
+### Note on tooling
+The in-app browser's viewport resize didn't propagate to `window.innerWidth`
+until given explicit pixel dimensions; presets left the media queries reading
+desktop. Measured against `matchMedia` to confirm mobile classes were actually
+active before trusting any result.
+
 ## 2026-07-20 — Session 1h: Governance transition diagram + explorer theme
 
 ### Built

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useDialogA11y } from "@/hooks/useDialogA11y";
 import { formatQry } from "@/lib/format";
 import { getProvider } from "@/lib/providers";
 import {
@@ -51,6 +52,13 @@ export function SlashingTerminal({
   const burn = target ? penaltyAmount(target.selfBond, penaltyPct) : 0;
   const isOverridden = penaltyPct !== preset.penaltyPct;
   const typedMatches = target !== null && typed.trim() === target.name;
+
+  function cancelConfirm() {
+    setConfirming(false);
+    setTyped("");
+  }
+
+  const dialogRef = useDialogA11y<HTMLDivElement>(confirming, cancelConfirm);
 
   function selectInfraction(kind: InfractionKind) {
     setInfraction(kind);
@@ -218,12 +226,18 @@ export function SlashingTerminal({
       {/* Double confirmation */}
       {confirming && target && (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby="slash-confirm-title"
+          onClick={cancelConfirm}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
         >
-          <div className="w-full max-w-md rounded-xl border border-danger/50 bg-card p-6 shadow-xl">
+          {/* stopPropagation so clicking the card doesn't dismiss via the backdrop */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md rounded-xl border border-danger/50 bg-card p-6 shadow-xl"
+          >
             <h3
               id="slash-confirm-title"
               className="text-base font-bold text-danger"
