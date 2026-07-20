@@ -64,6 +64,18 @@ export function AppHeader() {
             );
           })}
           </nav>
+
+          {/*
+            The spec's nav is exactly two tabs, so onboarding sits outside the
+            tab group as a distinct CTA rather than becoming a third tab.
+          */}
+          <Link
+            href="/onboarding"
+            className="hidden rounded-lg bg-brand px-4 py-1.5 text-sm font-bold text-white transition-colors hover:bg-brand-hover sm:inline-block"
+          >
+            Become a Miner
+          </Link>
+
           <ThemeToggle />
         </div>
       </div>

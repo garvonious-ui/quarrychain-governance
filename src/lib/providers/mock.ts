@@ -90,14 +90,27 @@ export function createMockProvider(): DataProvider {
       checkNodeConnection,
       submitApplication: (application: ValidatorApplication) =>
         latency({ id: `app_${application.minerName.toLowerCase().replace(/\s+/g, "_")}` }, 600),
+      /*
+       * Placeholder bring-up command. The ports and chain-id are correct for a
+       * CometBFT + EVM node (26656 p2p, 26657 consensus RPC, 8545 EVM RPC), but
+       * the image name, genesis URL, and seed peers are NOT confirmed — the
+       * chain team still owes us those (integration.md, open questions 1-2).
+       * The UI surfaces that caveat next to this block rather than presenting a
+       * guess as fact.
+       */
       buildNodeCommand: (host) => {
-        const hostFlag = host === "BareMetal" ? "custom" : host.toLowerCase();
+        const profile = host === "BareMetal" ? "custom" : host.toLowerCase();
         return [
           "docker pull quarrychain/node:latest",
-          `docker run -d --name quarrychain-validator \\`,
-          `  -p 26656:26656 -p 26657:26657 -p 8545:8545 \\`,
+          "",
+          "docker run -d --name quarrychain-validator \\",
+          "  -p 26656:26656 \\   # p2p",
+          "  -p 26657:26657 \\   # CometBFT RPC",
+          "  -p 8545:8545 \\     # EVM JSON-RPC",
           `  -e CHAIN_ID=${CHAIN.id} \\`,
-          `  -e HOST_PROFILE=${hostFlag} \\`,
+          `  -e HOST_PROFILE=${profile} \\`,
+          "  -e GENESIS_URL=<pending> \\",
+          "  -e SEEDS=<nodeId@host:26656> \\",
           "  quarrychain/node:latest",
         ].join("\n");
       },

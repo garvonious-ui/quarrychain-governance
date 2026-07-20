@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { CHAIN } from "@/lib/chain";
 import type { ServerHost, Validator } from "@/lib/types";
 
@@ -115,9 +116,10 @@ export function NetworkTopology({
 
           {/* Onboarding targets — explicitly NOT presented as live */}
           {onboardingTargets.map((host) => (
-            <div
+            <Link
               key={host}
-              className="rounded-lg border border-dashed border-border-strong bg-card p-4"
+              href="/onboarding"
+              className="group rounded-lg border border-dashed border-border-strong bg-card p-4 transition-colors hover:border-brand"
             >
               <div className="flex items-center justify-between">
                 <span className="text-sm font-bold text-muted">
@@ -126,10 +128,10 @@ export function NetworkTopology({
                 <span className="h-2.5 w-2.5 rounded-full bg-faint" />
               </div>
               <p className="mt-1 font-mono text-xs text-faint">no live nodes</p>
-              <p className="mt-2 text-[11px] text-muted">
-                Supported onboarding target — run a Quarry Miner here.
+              <p className="mt-2 text-[11px] text-muted group-hover:text-brand">
+                Supported onboarding target — run a Quarry Miner here →
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

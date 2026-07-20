@@ -52,11 +52,18 @@ the provider interface — see [integration.md](integration.md).
 - [x] Pinned campaign notice on the public profile
 - [x] SSG via `generateStaticParams`; 404 on unknown miner
 
-## Phase 4 — Module C: Onboarding + Validator Dashboard
-- [ ] "Become a Miner" wizard: profile → infra config → collateral lockup
-- [ ] Real node command block (per AWS / IONOS / bare metal)
-- [ ] `[Check Connection]` wired to the real EVM-RPC probe
-- [ ] 500,000 QRY self-bond step
+## Phase 4a — Module C: Onboarding Wizard
+- [x] "Become a Miner" wizard: profile → infra config → collateral lockup
+- [x] Node command block (per AWS / IONOS / bare metal), with a visible caveat
+      that image name + genesis URL are unconfirmed
+- [x] `[Check Connection]` wired to the real EVM-RPC probe — verified against
+      the live testnet, a wrong-chain node, and an unreachable host
+- [x] 500,000 QRY self-bond step + candidacy submission
+- [x] Entry points: header CTA + topology onboarding cards
+
+## Phase 4b — Module C: Validator Personal Dashboard
+- [ ] `/miner` route (the onboarding success CTA currently points at a 404)
+- [ ] Access gate: registered miners only, else "Access Denied" + onboarding link
 - [ ] Validator personal dashboard, sidebar nav (5 workspaces)
 - [ ] Server telemetry panel, self-bond locker, commission slider
 - [ ] Campaign hub (profile editor + pinned announcement)
