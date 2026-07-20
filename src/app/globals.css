@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * QuarryChain DPoS Governance Suite — design tokens
+ *
+ * Palette pinned to the Phase 6 spec. Light mode ONLY: this is a "clean
+ * fintech" surface, not the dark ICO launchpad aesthetic. Do not add a
+ * prefers-color-scheme dark block — the #212529 accent panels and the
+ * spec's contrast ratios assume a light ground.
+ */
+@theme {
+  /* Ground + chrome */
+  --color-surface: #f8f9fa;
+  --color-card: #ffffff;
+  --color-border: #e9ecef;
+  --color-border-strong: #ced4da;
+  --color-divider: #dee2e6;
+  --color-well: #f1f3f5;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Brand — "Quarry" blue / "Chain" black */
+  --color-brand: #007bff;
+  --color-brand-hover: #0056b3;
+  --color-brand-tint: #e7f1ff;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Ink ramp */
+  --color-ink: #000000;
+  --color-heading: #212529;
+  --color-body: #495057;
+  --color-muted: #6c757d;
+  --color-faint: #adb5bd;
+
+  /* Status */
+  --color-success: #198754;
+  --color-success-tint: #d1e7dd;
+  --color-success-deep: #0f5132;
+  --color-danger: #dc3545;
+  --color-danger-hover: #bb2d3b;
+  --color-warning: #ffc107;
+  --color-warning-tint: #fff3cd;
+
+  /* Type */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+/* Row flash fired when a validator commits a block. */
+@keyframes block-flash {
+  0% {
+    background-color: var(--color-brand-tint);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.animate-block-flash {
+  animation: block-flash 800ms ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 240ms ease-out;
+}
+
+/* The spec leans hard on live tickers. Honour reduced-motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
