@@ -1,5 +1,6 @@
 "use client";
 
+import { GovernanceHero } from "@/components/governance/GovernanceHero";
 import { GovernanceTransition } from "@/components/governance/GovernanceTransition";
 import { NetworkTopology } from "@/components/governance/NetworkTopology";
 import { ValidatorTable } from "@/components/governance/ValidatorTable";
@@ -28,6 +29,7 @@ export function GovernanceDashboard({
 
   return (
     <>
+      <GovernanceHero />
       <NetworkTopology
         validators={validators}
         height={height}

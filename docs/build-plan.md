@@ -18,7 +18,8 @@ the provider interface — see [integration.md](integration.md).
 - [x] Mock registry: 21 active + 4 candidates, 2 flagged as real IONOS nodes
 - [x] Real EVM-RPC node probe for onboarding "Check Connection"
 - [x] `docs/integration.md` handoff guide
-- [ ] Brand assets dropped into `public/assets/` (blocked — awaiting files)
+- [x] Brand logo + 3D coin sourced from quarrychain-web (nav logo + governance hero)
+- [ ] Remaining featured-miner icons + hero graphics (drmz/hydro/carpenter) still needed
 
 ## Theming (added 2026-07-20, overrides the spec's "light only")
 - [x] Semantic tokens split into `:root` (light) / `.dark` (dark)

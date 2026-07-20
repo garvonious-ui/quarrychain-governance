@@ -157,6 +157,21 @@ body {
   animation: fade-in 240ms ease-out;
 }
 
+/* Gentle bob for the hero coin. Neutralised by the reduced-motion rule below. */
+@keyframes coin-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-8deg);
+  }
+}
+
+.animate-coin-float {
+  animation: coin-float 4s ease-in-out infinite;
+}
+
 /* The spec leans hard on live tickers. Honour reduced-motion. */
 @media (prefers-reduced-motion: reduce) {
   *,

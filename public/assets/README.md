@@ -1,3 +1,8 @@
+## Delivered
+
+- `quarrychain-logo.png` / `quarrychain-logo.svg` — hexagon Q mark (from quarrychain-web), shown in the nav
+- `quarry-token.svg` — 3D QRY coin, used in the governance hero
+
 # Brand assets
 
 Drop the spec's PNG assets here using these **exact filenames** — the mock

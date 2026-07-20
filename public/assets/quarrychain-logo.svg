@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!--
+    QuarryChain Logo
+    Three overlapping hexagons (red, blue, green) with a centered hexagonal Q
+  -->
+
+  <!-- Background hexagons arranged in triangular formation -->
+  <!-- Red hexagon (top center) -->
+  <path d="M256 28l99 57v114l-99 57-99-57V85z" fill="#EF4444"/>
+
+  <!-- Blue hexagon (bottom left) -->
+  <path d="M152 148l99 57v114l-99 57-99-57V205z" fill="#3B82F6"/>
+
+  <!-- Green hexagon (bottom right) -->
+  <path d="M360 148l99 57v114l-99 57-99-57V205z" fill="#22C55E"/>
+
+  <!-- White outline ring for Q -->
+  <path d="M256 108l108 62.4v124.8L256 358 148 295.2V170.4z" fill="white"/>
+
+  <!-- Black hexagonal Q body -->
+  <path d="M256 126l96 55.4v110.8L256 348l-96-55.4V181.4z" fill="#1a1a1a"/>
+
+  <!-- Inner cutout (hole of Q) - white then dark -->
+  <path d="M256 186l52 30v60l-52 30-52-30v-60z" fill="white"/>
+  <path d="M256 200l40 23.1v46.2L256 292l-40-23.1v-46.2z" fill="#1a1a1a"/>
+
+  <!-- Q tail - diagonal slash going bottom-right -->
+  <path d="M280 280l56 48-16 18-56-48z" fill="white"/>
+  <path d="M284 286l48 41-8 10-48-41z" fill="#1a1a1a"/>
+</svg>
