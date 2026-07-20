@@ -1,5 +1,6 @@
 "use client";
 
+import { GovernanceTransition } from "@/components/governance/GovernanceTransition";
 import { NetworkTopology } from "@/components/governance/NetworkTopology";
 import { ValidatorTable } from "@/components/governance/ValidatorTable";
 import { useNodeTelemetry } from "@/hooks/useNodeTelemetry";
@@ -34,6 +35,7 @@ export function GovernanceDashboard({
         height={height}
         flashId={flashId}
       />
+      <GovernanceTransition />
     </>
   );
 }

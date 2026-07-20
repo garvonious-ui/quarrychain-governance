@@ -1,5 +1,52 @@
 # Changelog
 
+## 2026-07-20 — Session 1h: Governance transition diagram + explorer theme
+
+### Built
+- `src/components/governance/GovernanceTransition.tsx` — Phase 1/2/3 governance
+  maturity stepper with the protocol-change flow diagram; inactive paths dim per
+  phase. Added to the bottom of `/governance`.
+- `docs/explorer-theme.md` — Blockscout theme config for the explorer reskin.
+
+### How this was found
+A question about the explorer prompted a re-check of the source docs, and the
+docx extractor used in Session 1 turned out to be lossy: it read only paragraph
+text from `word/document.xml`, silently dropping **embedded images** and
+**hyperlink targets** (which live in the `.rels` parts). Re-extracting surfaced
+one image in the VibeCode prompt containing the "QuarryChain Governance
+Transition" diagram and a "Governance Maturity" stepper — neither of which
+appeared anywhere in the extracted text. It also independently confirms the
+200,000,000 QRY supply cap.
+
+Lesson: when extracting from a binary document format, enumerate every part
+before concluding something is absent. "Not in the text" is not "not in the doc".
+
+### Decisions
+- **The explorer reskin is env config, not a fork.** The deployment runs the
+  modern Blockscout Next.js frontend, which themes through environment variables
+  — network naming, logo, colors, homepage plate, footer links. Forking
+  Blockscout to restyle it would mean owning upstream merges forever for a
+  cosmetic gain. The doc says so explicitly so nobody reaches for the fork.
+- **Env var *keys* are flagged as needing a version check**, while the *values*
+  are authoritative. Blockscout has renamed frontend envs across releases, and
+  publishing a confident-looking config that silently no-ops would be worse than
+  saying "verify against your tag".
+- **Phase 1 and Phase 3 are marked as inferred.** The source image only pinned
+  down Phase 2 ("Hybrid · Multi-Sig / Soft Voting · Shared Authority"); the
+  other two are derived from the diagram's three paths. Flagged in the component
+  and the build plan rather than presented as spec.
+
+### Bugs / Gotchas
+- The browser preview pane froze mid-verification, making a working stepper look
+  broken across two separate checks. Reloading proved the component fine. Worth
+  re-testing after a reload before "fixing" code that a stuck renderer made look
+  wrong.
+
+### Verified
+Stepper cycles Phase 1 → 3 with correct security model, governance model, and
+path dimming at each level (Phase 1: 2 paths dimmed, Phase 2: 1, Phase 3: 1),
+and the prev control disables at Phase 1. Lint, typecheck, build clean.
+
 ## 2026-07-20 — Session 1g: QuarryLabs admin console (Phase 5)
 
 ### Built

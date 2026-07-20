@@ -81,6 +81,19 @@ the provider interface — see [integration.md](integration.md).
 - [x] Status dots (producing / missed / jailed / evicted)
 - [ ] Replace cosmetic gate with real wallet + server-side authorisation (Phase 6)
 
+## Explorer reskin (added 2026-07-20 — not in the reference docs)
+- [x] Confirmed the explorer runs the modern Blockscout Next.js frontend, so
+      theming is env config rather than a fork
+- [x] `docs/explorer-theme.md` — drop-in config for the Blockscout deployment
+- [ ] Applied by whoever controls the Blockscout deployment (infra, not this repo)
+- [ ] Light/dark logo + icon variants (blocked on brand assets)
+
+## Governance Transition diagram (recovered from an embedded image)
+- [x] Phase 1/2/3 maturity stepper with per-phase security + governance model
+- [x] Change-path flow diagram, inactive paths dimmed per phase
+- [ ] Confirm Phase 1 and Phase 3 wording with the protocol team — the source
+      image only pinned down Phase 2
+
 ## Phase 6 — Real Seams & Polish
 - [ ] RainbowKit wallet connect (role gating: voter / candidate / miner / admin)
 - [ ] Live block height from public RPC (`NEXT_PUBLIC_DATA_MODE=live` partial)
