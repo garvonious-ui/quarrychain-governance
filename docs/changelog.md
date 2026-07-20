@@ -113,7 +113,7 @@ link) present. Lint, typecheck, build clean.
 
 ### Next
 - Phase 4 (Module C): validator onboarding wizard + personal dashboard — the
-  module Lou flagged as the real product.
+  module flagged as the priority for this build.
 
 ## 2026-07-20 — Session 1d: Module B voting & yield portal (Phase 2)
 
@@ -174,7 +174,7 @@ typecheck, build clean.
 - `src/components/theme/ThemeToggle.tsx` — header toggle, inlined sun/moon SVGs.
 
 ### Decisions
-- **Lou overrode the spec's "light mode only" rule.** The Phase 6 spec explicitly
+- **Product direction overrode the spec's "light mode only" rule.** The Phase 6 spec explicitly
   describes a light fintech surface, and Session 1 hard-coded that as a project
   rule. Dark mode is now a requirement; AGENTS.md updated so the old rule doesn't
   get re-applied later.
@@ -231,7 +231,7 @@ Lint, typecheck, and build clean.
   Frankfurt. Only the two IONOS nodes actually exist, so the widget renders one
   live cluster and presents AWS + Bare Metal as *onboarding targets* ("no live
   nodes — supported onboarding target"). This keeps the demo honest and doubles
-  as a funnel into the onboarding flow, which is the module Lou cares most about.
+  as a funnel into the onboarding flow, the priority module for this build.
 - **Sorting does not re-sort on every block.** `height` is deliberately excluded
   from the sort memo; otherwise the table would reshuffle every 3.6s and be
   unusable. Ordering by "Latest Block" tracks rank anyway.

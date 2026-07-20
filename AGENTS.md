@@ -50,7 +50,8 @@ Sibling repos: `quarrychain-ico` (token sale — handed off), `quarrychain-web`
 - **Two themes, toggled via a `dark` class on `<html>`.** Light is the Phase 6
   spec's fintech palette; dark inherits quarrychain-web's tokens (`#08080f` /
   `#0f1019` / `#161822`) so the suite matches the main site. The spec says
-  "light only" — Lou overrode that on 2026-07-20; the toggle is a requirement.
+  "light only" — that was superseded by product direction on 2026-07-20;
+  the toggle is a requirement.
 - **The DOM class is the source of truth for theme**, not React state. Read it
   via `useTheme()` (`useSyncExternalStore`). Never mirror it into state — an
   inline script sets it pre-hydration, so state would start stale.

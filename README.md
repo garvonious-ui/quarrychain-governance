@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QuarryChain — DPoS Governance Suite
 
-## Getting Started
+Frontend for QuarryChain's Delegated Proof of Stake governance: validator
+registry, delegation and yield, miner profiles, validator onboarding, and a
+personal node dashboard.
 
-First, run the development server:
+**Live demo:** https://quarrychain-governance.vercel.app
+
+---
+
+## ⚠️ Read this first if you're wiring the backend
+
+This repo is **frontend only**. It ships with a mock data provider so the whole
+app runs standalone. To connect it to the real chain you implement **one
+interface** — you do not touch a single component.
+
+👉 **[docs/integration.md](docs/integration.md)** is the guide. It covers what
+the chain actually is, which endpoint backs each method, and the open questions
+still outstanding.
+
+Two findings in that doc that will save you time:
+
+1. **This is a Cosmos-SDK / CometBFT chain with an EVM module** (EVM chain-id
+   `1129`), not a Geth-family chain.
+2. **Validators register via a Cosmos `create-validator` message** — an ed25519
+   consensus pubkey plus a native QRY self-delegation. There is **no ERC-20
+   "validator registry contract"**, despite what the original spec implies.
+   Building one would not work.
+
+---
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+No environment variables are required — it runs on mock data out of the box.
+Copy `.env.example` to `.env.local` to override endpoints.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm build        # production build
+pnpm lint         # eslint
+npx tsc --noEmit  # typecheck
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Routes
 
-## Learn More
+| Route | What it is |
+|---|---|
+| `/governance` | Validator registry + network topology (Module A) |
+| `/governance/[id]` | Public miner profile, one-click delegate link |
+| `/voting` | Freeze → Select → Cast → Manage delegation wizard (Module B) |
+| `/onboarding` | "Become a Quarry Miner" wizard (Module C) |
+| `/miner` | Validator personal dashboard (Module C) |
 
-To learn more about Next.js, take a look at the following resources:
+## Architecture
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/lib/types.ts            ← domain shapes; these ARE the integration contract
+src/lib/providers/types.ts  ← the DataProvider interface you implement
+src/lib/providers/mock.ts   ← reference implementation (simulated)
+src/lib/providers/index.ts  ← runtime resolver, reads NEXT_PUBLIC_DATA_MODE
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Every value the UI renders comes through `getProvider()`. No component issues a
+`fetch`. Swapping the provider swaps the entire app's data source.
 
-## Deploy on Vercel
+## What is real vs. simulated
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Being precise about this matters — parts of this app look live and are not.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Real:**
+- The onboarding **[Check Connection]** probe. It calls the operator's own EVM
+  JSON-RPC and asserts chain-id, sync distance against the public tip, and peer
+  count. It reports genuine failures and never fakes a pass.
+- Chain constants (chain-id 1129, RPC and explorer URLs) — verified against the
+  live testnet.
+- The two IONOS validator addresses flagged `isLiveNode` — real block proposers.
+
+**Simulated:**
+- The validator registry, vote weights, APY, rewards, latency and uptime drift.
+- Block-height and consensus-state tickers.
+- All transactions. Hashes render with a `SIMULATED` badge.
+- Validator identity on `/miner`, via a deliberately loud dev harness bar.
+
+`NetworkStatus.isLive` tells the UI which mode it is in, and the UI says so on
+screen. **Please preserve that.** The topology widget in particular only renders
+nodes that actually exist — `Validator.isLiveNode` should never be flipped on to
+make the network look larger.
+
+## Security note
+
+UI-level gating in this app (the admin surface, the miner dashboard) is
+**cosmetic**. Hiding a button is not access control. Every privileged action must
+be authorised server-side when the backend lands.
+
+## Outstanding
+
+Brand assets are not yet delivered — see
+[public/assets/README.md](public/assets/README.md) for the expected filenames.
+Avatars fall back to initials until they land.
+
+Open questions for the chain team are listed at the end of
+[docs/integration.md](docs/integration.md).
+
+## Project docs
+
+- [docs/integration.md](docs/integration.md) — backend integration guide
+- [docs/build-plan.md](docs/build-plan.md) — phased plan and status
+- [docs/changelog.md](docs/changelog.md) — dated decision record
+- [AGENTS.md](AGENTS.md) — conventions and critical rules

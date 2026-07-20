@@ -86,7 +86,7 @@ the provider interface — see [integration.md](integration.md).
 - [ ] Accessibility pass on tables, modals, and the wizard
 
 ## Open Items
-1. Brand assets — logo + 3 featured icons + 2 hero graphics (owed by Lou)
+1. Brand assets — logo + 3 featured icons + 2 hero graphics (owed by the project owner)
 2. Node artifact name/version, genesis, seed peers (owed by chain team)
 3. Cosmos REST / CometBFT RPC exposure (owed by chain team)
 4. Staking denom + min-self-delegation param
