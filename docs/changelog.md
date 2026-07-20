@@ -1,5 +1,58 @@
 # Changelog
 
+## 2026-07-20 — Session 1e: Miner detail pages (Phase 3)
+
+### Built
+- `src/app/governance/[id]/page.tsx` — miner profile, prerendered for all 25
+  validators via `generateStaticParams`, `notFound()` on unknown ids, per-miner
+  `generateMetadata`.
+- `src/components/governance/MinerProfile.tsx` — header (name, status badge,
+  explorer-linked address, rank/host/region/website), pinned campaign notice,
+  About, consensus performance grid, account stats sidebar, vote-weight panel.
+- `src/components/governance/MinerHero.tsx` — optional profile graphic.
+- `src/components/governance/DelegateLinkButton.tsx` — copies a shareable
+  one-click delegate URL.
+- `/voting?miner=<id>` pre-selects a validator and skips the selection grid.
+
+### Contract change
+`Validator` gained four fields for the spec's stats sidebar: `qryAvailable`,
+`transactions`, `transfers`, `energy`. These come from account/explorer state
+rather than the staking module — `docs/integration.md` updated with the
+Blockscout endpoints that back them, per the rule that type changes and the
+integration guide move together.
+
+### Decisions
+- **The `?miner=` param is validated against the real registry.** A stale or
+  hand-edited link falls back to the normal selection flow instead of erroring
+  or silently delegating to nothing.
+- **Read `searchParams` server-side** rather than `useSearchParams`, so the
+  portal stays a plain client component with no Suspense boundary.
+- **Pre-selection still requires freezing first** — it skips step 2, not step 1.
+  Skipping the freeze would delegate resources the user hasn't committed.
+- **A missing hero graphic renders nothing**, not a placeholder frame. This is a
+  page validators campaign with; a broken-image box undercuts them.
+- **The copy-link button reports failure honestly.** The Clipboard API needs a
+  secure context and can genuinely fail; showing "Copied!" when nothing was
+  copied is worse than showing "Copy failed".
+
+### Bugs / Gotchas
+- Same transient-image class of bug as the avatars, but far more visible: the
+  hero `<img>` reserved its full 1200x480 box for a frame before `onError` fired,
+  flashing a large empty panel on every profile load. Fixed by keeping the
+  wrapper `hidden` until `onLoad` — `display:none` does not stop the browser
+  fetching the image, so real assets still appear.
+
+### Verified
+All 25 profile routes return 200; unknown ids 404; a bogus `?miner=` value
+falls back to the normal flow with no shared-link banner. Confirmed the deep
+link jumps straight to "Confirm Token Delegation" without rendering the
+selection grid. Featured copy (DRMZ San Diego / Quarry Decentralism, drmz.app
+link) present. Lint, typecheck, build clean.
+
+### Next
+- Phase 4 (Module C): validator onboarding wizard + personal dashboard — the
+  module Lou flagged as the real product.
+
 ## 2026-07-20 — Session 1d: Module B voting & yield portal (Phase 2)
 
 ### Built

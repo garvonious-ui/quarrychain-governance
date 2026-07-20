@@ -31,11 +31,21 @@ interface ActiveDelegation {
   txHash: string;
 }
 
-export function VotingPortal({ validators }: { validators: Validator[] }) {
+export function VotingPortal({
+  validators,
+  preselectedId,
+}: {
+  validators: Validator[];
+  preselectedId?: string;
+}) {
   const [step, setStep] = useState(1);
   const [freezeInput, setFreezeInput] = useState("1000");
   const [resources, setResources] = useState({ energy: 0, bandwidth: 0 });
-  const [selected, setSelected] = useState<Validator | null>(null);
+  // Arriving via a "One-Click Delegate" link pre-selects the miner, so after
+  // freezing we skip the selection grid and go straight to confirmation.
+  const [selected, setSelected] = useState<Validator | null>(
+    () => validators.find((v) => v.id === preselectedId) ?? null,
+  );
   const [delegation, setDelegation] = useState<ActiveDelegation | null>(null);
   const [autoCompound, setAutoCompound] = useState(true);
   const [pending, setPending] = useState(false);
@@ -55,7 +65,7 @@ export function VotingPortal({ validators }: { validators: Validator[] }) {
     try {
       const next = await provider.delegation.freeze(amount);
       setResources(next);
-      setStep(2);
+      setStep(selected ? 3 : 2);
     } catch {
       setError("Could not freeze that amount. Try again.");
     } finally {
@@ -158,6 +168,26 @@ export function VotingPortal({ validators }: { validators: Validator[] }) {
           {/* Step 1 — Freeze */}
           {step === 1 && (
             <form onSubmit={handleFreeze} className="animate-fade-in space-y-4">
+              {selected && (
+                <p className="flex flex-wrap items-center gap-2 rounded-lg border border-brand/20 bg-brand-tint px-4 py-3 text-xs font-medium text-brand">
+                  <span className="flex items-center gap-2">
+                    <ValidatorIcon
+                      name={selected.name}
+                      asset={selected.iconAsset}
+                      size={20}
+                    />
+                    Delegating to <strong>{selected.name}</strong> via a shared
+                    link.
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setSelected(null)}
+                    className="ml-auto underline underline-offset-2 hover:no-underline"
+                  >
+                    Choose a different miner
+                  </button>
+                </p>
+              )}
               <div className="rounded-lg border border-border bg-surface p-4">
                 <label
                   htmlFor="freeze-amount"

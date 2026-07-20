@@ -45,10 +45,12 @@ the provider interface — see [integration.md](integration.md).
 - [x] Dynamic APY window
 
 ## Phase 3 — Miner Detail Pages
-- [ ] `/governance/[id]` profile: header, wallet address, stats sidebar
-- [ ] Featured content for DRMZ / Hydro Ocean / Carpenter Union
-- [ ] Prominent Vote/Delegate CTA
-- [ ] One-click delegate deep-link (`/voting?miner=<id>`)
+- [x] `/governance/[id]` profile: header, wallet address, stats sidebar
+- [x] Featured content for DRMZ / Hydro Ocean / Carpenter Union
+- [x] Prominent Vote/Delegate CTA
+- [x] One-click delegate deep-link (`/voting?miner=<id>`) + copy-link button
+- [x] Pinned campaign notice on the public profile
+- [x] SSG via `generateStaticParams`; 404 on unknown miner
 
 ## Phase 4 — Module C: Onboarding + Validator Dashboard
 - [ ] "Become a Miner" wizard: profile → infra config → collateral lockup

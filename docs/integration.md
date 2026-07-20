@@ -78,6 +78,15 @@ Maps to `Validator[]`. Notes:
 - `iconAsset` / `heroAsset` / `pinnedNotice` — **off-chain**, no on-chain source.
   These need a small profile store (the campaign hub writes them).
 
+Profile-page stats sidebar (added Phase 3) comes from **account/explorer state**,
+not the staking module:
+- `qryAvailable` ← `eth_getBalance` on the validator's EVM address, or Cosmos
+  `/cosmos/bank/v1beta1/balances/{addr}` for the liquid (unbonded) denom
+- `transactions` ← Blockscout `/api/v2/addresses/{addr}/counters`
+- `transfers` ← Blockscout `/api/v2/addresses/{addr}/token-transfers` (count)
+- `energy` ← the freeze/resource module if one exists; otherwise derive from
+  `selfBond`. **Open question 7 covers whether this module is real.**
+
 **Requires exposing Cosmos REST (`:1317`) read-only.**
 
 ### `telemetry.getNetworkStatus()` / `subscribeHeight()`

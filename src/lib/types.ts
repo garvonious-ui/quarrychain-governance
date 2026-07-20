@@ -44,6 +44,20 @@ export interface Validator {
   description: string | null;
   /** Pinned campaign announcement shown on the public profile. */
   pinnedNotice: string | null;
+
+  /*
+   * Profile-page stats sidebar. These come from account/explorer state rather
+   * than the staking module — see docs/integration.md for the Blockscout
+   * endpoints that back them.
+   */
+  /** Liquid (unbonded) balance, whole QRY. */
+  qryAvailable: number;
+  /** Total transactions sent by this account. */
+  transactions: number;
+  /** Token transfer count for this account. */
+  transfers: number;
+  /** Freeze-derived resource units. */
+  energy: number;
   /** Featured miners render richer profile content and pin to the top. */
   featured: boolean;
   /**

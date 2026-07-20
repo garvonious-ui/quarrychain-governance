@@ -21,7 +21,24 @@ function pseudoAddress(seed: number): string {
   return `0x${hex}${"a3f9c17b42e8d05619bc7fa2384de6".repeat(2).slice(0, 32)}`;
 }
 
-const FEATURED: Validator[] = [
+/** Fields derived from the rest of the record, so they stay self-consistent. */
+type ValidatorSeed = Omit<
+  Validator,
+  "qryAvailable" | "transactions" | "transfers" | "energy"
+>;
+
+function withStats(v: ValidatorSeed): Validator {
+  const transactions = Math.round(v.blocksProduced / 900) + v.rank * 41;
+  return {
+    ...v,
+    qryAvailable: Math.round(v.votes * 0.014),
+    transactions,
+    transfers: Math.round(transactions * 0.62),
+    energy: Math.round(v.selfBond * 1.25),
+  };
+}
+
+const FEATURED: ValidatorSeed[] = [
   {
     id: "drmz",
     rank: 1,
@@ -44,7 +61,7 @@ const FEATURED: Validator[] = [
     region: "Frankfurt",
     website: "https://www.drmz.app/",
     description:
-      "San Diego–based events and education collective bringing local community programming on-chain. Operates a validator as part of the Quarry Decentralism movement.",
+      "San Diego–based events and education collective bringing local community programming on-chain. DRMZ runs validator infrastructure as part of the Quarry Decentralism movement, pairing block production with in-person web3 education for creators and small businesses.",
     pinnedNotice: "Join our next San Diego web3 meetup — details on drmz.app.",
     featured: true,
     isLiveNode: true,
@@ -71,7 +88,7 @@ const FEATURED: Validator[] = [
     region: "Frankfurt",
     website: "https://hydroceanenergy.com/",
     description:
-      "Renewable ocean energy operator running coastal validation infrastructure. Block production powered by tidal generation.",
+      "Renewable ocean energy operator running coastal validation infrastructure. Block production is powered by tidal generation, making this one of the few validator sets on any network running on directly-attached renewable capacity.",
     pinnedNotice: null,
     featured: true,
     isLiveNode: true,
@@ -98,7 +115,7 @@ const FEATURED: Validator[] = [
     region: "US West",
     website: null,
     description:
-      "Southwest Carpenters Local 661 — organized labor entering decentralized infrastructure under the Quarry Decentralism movement.",
+      "Southwest Carpenters Local 661 — organized labor entering decentralized infrastructure. The local operates a validator under the Quarry Decentralism movement, treating block production as collectively-held infrastructure rather than a purely financial position.",
     pinnedNotice: null,
     featured: true,
     isLiveNode: false,
@@ -178,7 +195,7 @@ const FILLER_NAMES = [
   "Anchor Point Staking",
 ];
 
-const FILLER: Validator[] = FILLER_NAMES.map((name, i) => {
+const FILLER: ValidatorSeed[] = FILLER_NAMES.map((name, i) => {
   const rank = i + 6;
   const host = i % 3 === 0 ? "AWS" : i % 3 === 1 ? "IONOS" : "BareMetal";
   return {
@@ -209,17 +226,13 @@ const FILLER: Validator[] = FILLER_NAMES.map((name, i) => {
   };
 });
 
-/** The elected consensus set — exactly ACTIVE_SET_SIZE entries. */
-export const MOCK_ACTIVE_VALIDATORS: Validator[] = [...FEATURED, ...FILLER];
-
-/** Backup miners campaigning for a slot. */
-export const MOCK_CANDIDATE_VALIDATORS: Validator[] = [
+const CANDIDATES: ValidatorSeed[] = [
   "Foundry Node Works",
   "Lumen Stake",
   "Granite Consensus",
   "Tidewater Validation",
 ].map((name, i) => {
-  const rank = MOCK_ACTIVE_VALIDATORS.length + i + 1;
+  const rank = FEATURED.length + FILLER.length + i + 1;
   return {
     id: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
     rank,
@@ -241,10 +254,19 @@ export const MOCK_CANDIDATE_VALIDATORS: Validator[] = [
     host: (i % 2 === 0 ? "AWS" : "BareMetal") as Validator["host"],
     region: i % 2 === 0 ? "EU West" : "Singapore",
     website: null,
-    description: null,
+    description:
+      "Backup miner campaigning for a seat in the active consensus set.",
     pinnedNotice:
       i === 0 ? "Campaigning for a top-21 slot — X Space this Thursday." : null,
     featured: false,
     isLiveNode: false,
   };
 });
+
+/** The elected consensus set — exactly ACTIVE_SET_SIZE entries. */
+export const MOCK_ACTIVE_VALIDATORS: Validator[] = [...FEATURED, ...FILLER].map(
+  withStats,
+);
+
+/** Backup miners campaigning for a slot. */
+export const MOCK_CANDIDATE_VALIDATORS: Validator[] = CANDIDATES.map(withStats);
