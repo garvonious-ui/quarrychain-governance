@@ -1,5 +1,53 @@
 # Changelog
 
+## 2026-07-20 — Session 1d: Module B voting & yield portal (Phase 2)
+
+### Built
+- `src/components/voting/VotingPortal.tsx` — the 4-step wizard (Freeze → Select →
+  Cast → Manage) with pending/error states. Every mutation goes through the
+  provider, so real staking is a provider change rather than a rewrite.
+- `src/components/voting/YieldSidebar.tsx` — "Sustainable Bedrock Yield" panel:
+  live odometer, APY window, energy/bandwidth, auto-compounding toggle + tooltip.
+- `src/hooks/useLiveEarnings.ts` — the reward odometer.
+- `src/lib/format.ts` — shared QRY / percent / address formatting.
+- `panel` + `panel-ink` tokens for the spec's dark accent sidebar.
+
+### Decisions
+- **Earnings derive from elapsed wall-clock time, not per-tick accumulation.**
+  `setInterval` drifts — in a background tab or under load it fires late, and
+  accumulating a fixed increment per tick silently under-counts. Computing from
+  elapsed time keeps the number honest regardless of tick timing. (The spec's
+  reference code accumulates per tick *and* runs a 1000ms interval while adding
+  100ms of rewards each time — a 10x undercount. Not reproduced.)
+- **Simulated transaction hashes are labelled as such.** The mock provider returns
+  a fake hash; it renders with a "SIMULATED" badge and the confirm step states
+  that wallet signing arrives in Phase 6. An unlabelled hash in a screenshot would
+  read as a real on-chain receipt.
+- **Odometer collapses to zero via a derived return**, not a state reset in an
+  effect — so revoking a delegation shows 0.000000 immediately with no stale
+  frame, and no `set-state-in-effect` violation.
+- **Tooltip inverted to white-on-dark.** The spec styles it `bg-black`, but it sits
+  ON the accent panel, which is dark in *both* themes — black on near-black. White
+  guarantees contrast either way. Copy itself is verbatim per spec.
+- **`aria-live` deliberately omitted from the odometer.** It updates 10x/second;
+  announcing every tick would make a screen reader unusable.
+
+### Bugs / Gotchas
+- Miner selection cards had **no accessible name** — the visible content is split
+  across nested spans, which yields nothing usable for the button. Added explicit
+  `aria-label`s ("Delegate to DRMZ — 13.4% APY, IONOS Frankfurt").
+
+### Verified
+Drove the full wizard in the browser, both themes. Freeze math correct
+(25,000 QRY → 31,250 μS / 21,250 bp/s). Odometer rate checked against hand
+calculation: 25,000 @ 13.4% = 3,350/yr = 0.000106/s, and the displayed value
+tracked elapsed time. Vote Out resets odometer, badge, APY, and resources and
+returns to step 1. Tooltip copy asserted equal to the spec string. Lint,
+typecheck, build clean.
+
+### Next
+- Phase 3: `/governance/[id]` miner detail pages (currently 404).
+
 ## 2026-07-20 — Session 1c: Dark mode + theme toggle
 
 ### Built

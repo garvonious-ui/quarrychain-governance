@@ -47,6 +47,11 @@
   --danger-hover: #bb2d3b;
   --warning: #ffc107;
   --warning-tint: #fff3cd;
+
+  /* Accent panel — the spec's dark yield sidebar. Deliberately dark on the
+     light theme; on dark it becomes an elevated surface instead. */
+  --panel: #212529;
+  --panel-ink: #ffffff;
 }
 
 .dark {
@@ -79,6 +84,9 @@
   --danger-hover: #dc2626;
   --warning: #fbbf24;
   --warning-tint: rgba(251, 191, 36, 0.15);
+
+  --panel: #161822;
+  --panel-ink: #f1f5f9;
 }
 
 @theme inline {
@@ -106,6 +114,9 @@
   --color-danger-hover: var(--danger-hover);
   --color-warning: var(--warning);
   --color-warning-tint: var(--warning-tint);
+
+  --color-panel: var(--panel);
+  --color-panel-ink: var(--panel-ink);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;

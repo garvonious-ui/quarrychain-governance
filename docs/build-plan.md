@@ -35,14 +35,14 @@ the provider interface — see [integration.md](integration.md).
 - [x] Featured miners emphasised, with icon assets + initials fallback
 
 ## Phase 2 — Module B: Voting & Yield Portal
-- [ ] 4-step wizard: Freeze → Select → Cast → Manage
-- [ ] Energy / Bandwidth derivation from frozen QRY
-- [ ] Miner selection grid
-- [ ] Vote confirmation modal + wallet signature step
-- [ ] `[Vote Out]` revoke/unstake path
-- [ ] Live earnings odometer (6dp, 100ms tick)
-- [ ] Auto-compounding toggle + spec-exact tooltip copy
-- [ ] Dynamic APY window
+- [x] 4-step wizard: Freeze → Select → Cast → Manage
+- [x] Energy / Bandwidth derivation from frozen QRY
+- [x] Miner selection grid
+- [x] Vote confirmation step (wallet signature deferred to Phase 6)
+- [x] `[Vote Out]` revoke/unstake path
+- [x] Live earnings odometer (6dp, 100ms tick)
+- [x] Auto-compounding toggle + spec-exact tooltip copy
+- [x] Dynamic APY window
 
 ## Phase 3 — Miner Detail Pages
 - [ ] `/governance/[id]` profile: header, wallet address, stats sidebar
