@@ -8,6 +8,7 @@ import {
   BURN_DISCLOSURE,
   penaltyAmount,
   SLASH_PRESETS,
+  TOTAL_QRY_SUPPLY,
 } from "@/lib/slashing";
 import type { InfractionKind, Validator } from "@/lib/types";
 
@@ -28,9 +29,12 @@ import type { InfractionKind, Validator } from "@/lib/types";
  */
 export function SlashingTerminal({
   validators,
+  burnedToDate,
   onSlashed,
 }: {
   validators: Validator[];
+  /** QRY already burned this session, so the supply readout stays cumulative. */
+  burnedToDate: number;
   onSlashed: (validatorId: string, penaltyPct: number) => void;
 }) {
   const [targetId, setTargetId] = useState<string>("");
@@ -187,6 +191,12 @@ export function SlashingTerminal({
               <dt className="text-muted">Total Global Supply Reduction</dt>
               <dd className="font-mono font-bold text-danger">
                 {target ? `−${formatQry(burn)}` : "—"}
+              </dd>
+            </div>
+            <div className="flex justify-between py-1.5">
+              <dt className="text-muted">Resulting Global Supply</dt>
+              <dd className="font-mono font-bold text-heading">
+                {formatQry(TOTAL_QRY_SUPPLY - burnedToDate - burn)}
               </dd>
             </div>
           </dl>

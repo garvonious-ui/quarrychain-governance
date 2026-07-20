@@ -132,8 +132,13 @@ export function AdminConsole({
       <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-danger/40 bg-danger/5 px-5 py-3">
         <span className="flex items-center gap-2">
           <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-danger" />
-          <span className="text-xs font-bold uppercase tracking-wider text-danger">
-            Admin Active — Phase 1 Manual Control
+          {/*
+            Verbatim per the Module D verification checklist: the ribbon must
+            print precisely "ADMIN ACTIVE - PHASE 1 MANUAL CONTROL". Plain
+            hyphen, not an em-dash — do not restyle this string.
+          */}
+          <span className="text-xs font-bold tracking-wider text-danger">
+            ADMIN ACTIVE - PHASE 1 MANUAL CONTROL
           </span>
         </span>
         <span className="font-mono text-[11px] text-muted">
@@ -275,6 +280,7 @@ export function AdminConsole({
         {/* Right — emergency terminal */}
         <SlashingTerminal
           validators={validators.filter((v) => !evicted.has(v.id))}
+          burnedToDate={burnedTotal}
           onSlashed={handleSlashed}
         />
       </div>

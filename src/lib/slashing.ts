@@ -31,12 +31,18 @@ export const SLASH_PRESETS: Record<InfractionKind, SlashPreset> = {
 export const BURN_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 /**
- * Spec-mandated disclosure shown beside the burn calculator. Quoted closely
- * because it states where penalised funds go and what happens to delegators —
- * exactly the sort of claim that should not drift with a casual reword.
+ * Spec-mandated disclosure shown beside the burn calculator.
+ *
+ * The Module D verification checklist requires this to render
+ * CHARACTER-FOR-CHARACTER. Note the ASCII "..." inside the burn address — not a
+ * typographic ellipsis. Do not "tidy" the punctuation; it is an audit
+ * requirement, and a prettier dash would fail the check.
  */
 export const BURN_DISCLOSURE =
-  "All penalized QRY are immediately routed to the Burn Address (0x0000…0000), reducing the total global supply of QRY permanently. Delegator funds are un-frozen and returned to liquid state to protect innocent community members during Phase 1.";
+  "All penalized QRY are immediately routed to the Burn Address (0x0000...0000), reducing the total global supply of QRY permanently. Delegator funds are un-frozen and returned to liquid state to protect innocent community members during Phase 1.";
+
+/** Fixed global supply cap — spec section 6, Core Economic Variables. */
+export const TOTAL_QRY_SUPPLY = 200_000_000;
 
 export function penaltyAmount(selfBond: number, penaltyPct: number): number {
   return Math.round(selfBond * (penaltyPct / 100));
