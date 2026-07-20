@@ -1,5 +1,67 @@
 # Changelog
 
+## 2026-07-20 — Session 1f: Onboarding wizard + validator dashboard (Phase 4)
+
+### Built — 4a, onboarding wizard
+- `src/components/onboarding/OnboardingWizard.tsx` — profile & branding →
+  infrastructure config → collateral lockup, with candidacy submission.
+- `src/components/onboarding/ConnectionCheck.tsx` — the real node probe.
+- `src/components/onboarding/NodeCommandBlock.tsx` — copyable deploy command.
+- Entry points: header "Become a Miner" CTA, topology onboarding cards.
+
+### Built — 4b, validator personal dashboard
+- `src/app/miner/page.tsx` + `MinerDashboard.tsx` — access gate, status banner
+  (rank / votes / network weight), sidebar nav across 5 workspaces.
+- Sections: Overview (block-production telemetry + QRY yield ticker with the
+  5 time horizons), Server Analytics, Staking & Pool (self-bond locker,
+  delegation volume, commission slider), Campaign Hub, Governance Voting.
+- `src/hooks/useConsensusTicker.ts` — CometBFT-style consensus state cycle.
+- `src/hooks/useMinerRole.ts` + `DevHarnessBar` — simulated validator identity.
+
+### Decisions
+- **The `[Check Connection]` step is a real network probe.** The spec's
+  reference implementation is a 1.5s `setTimeout` that always succeeds, which
+  would tell an operator with a broken node that everything is fine — the single
+  most harmful thing this module could do. Verified against three cases: the
+  live testnet (chain 1129, 0 behind, 4 peers → pass), a wrong-chain node
+  (11155111 → rejected, Continue blocked), and an unreachable host (timeout →
+  blocked, CORS hint surfaced).
+- **CORS did not block browser-origin calls to the public QuarryChain RPC**, so
+  the server-side proxy fallback noted in integration.md may be unnecessary.
+  Worth re-checking against a fresh operator node, since defaults vary.
+- **The deploy command carries a visible warning.** Ports and chain-id are
+  correct; the image name and genesis URL are not confirmed. An operator who
+  copies a wrong image name fails at first contact with the network, so the gap
+  is flagged rather than papered over with a confident-looking guess.
+- **The dev harness is deliberately loud.** There is no wallet yet, so the miner
+  dashboard has no real gate. An amber bar states that plainly — same reasoning
+  as the ICO repo's test-mode banner: nobody should screenshot this and mistake
+  it for a real access-controlled view.
+- **The harness impersonates real registry entries** rather than inventing a
+  synthetic "your node" record, so what an operator sees matches what voters see
+  on the public profile.
+- **Governance voting is elected-only.** Candidates get a read-only view and an
+  explanation, because under DPoS only the top 21 carry network weight.
+- **Reward projections are labelled ESTIMATE** with a note that they extrapolate
+  the current rate and assume constant pool weight. Unlabelled forward numbers on
+  a yield dashboard read as promises.
+- **Local-only edits say so.** Commission and campaign-profile changes surface a
+  notice that nothing was persisted, naming the missing backend piece.
+
+### Verified
+Onboarding driven end-to-end including all three connection-check outcomes.
+Dashboard verified across all three harness roles: visitor → Access Denied with
+onboarding link; elected → DRMZ, rank #1 of 21, 6.50% weight, vote buttons
+present and a vote recorded; candidate → Foundry Node Works, zero vote buttons,
+restriction notice shown. Yield horizon math checked against the daily rate
+(1,240/day → 52/hr, 8,680/wk, 37,200/mo, 452,600/yr). Delegation pool math
+confirmed (54,210,480 − 500,000 self-bond = 53,710,480). Sidebar `aria-current`
+verified on the active section only. Lint, typecheck, build clean.
+
+### Next
+- Phase 5 (Module D): QuarryLabs admin console — manual approvals, jail/slash
+  terminal, burn calculator.
+
 ## 2026-07-20 — Session 1e: Miner detail pages (Phase 3)
 
 ### Built

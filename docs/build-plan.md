@@ -62,13 +62,14 @@ the provider interface — see [integration.md](integration.md).
 - [x] Entry points: header CTA + topology onboarding cards
 
 ## Phase 4b — Module C: Validator Personal Dashboard
-- [ ] `/miner` route (the onboarding success CTA currently points at a 404)
-- [ ] Access gate: registered miners only, else "Access Denied" + onboarding link
-- [ ] Validator personal dashboard, sidebar nav (5 workspaces)
-- [ ] Server telemetry panel, self-bond locker, commission slider
-- [ ] Campaign hub (profile editor + pinned announcement)
-- [ ] Validator governance panel (Aye / Nay / Abstain)
-- [ ] Block production telemetry + QRY yield ticker
+- [x] `/miner` route
+- [x] Access gate: registered miners only, else "Access Denied" + onboarding link
+- [x] Validator personal dashboard, sidebar nav (5 workspaces)
+- [x] Server telemetry panel, self-bond locker, commission slider
+- [x] Campaign hub (profile editor + pinned announcement)
+- [x] Validator governance panel (Aye / Nay / Abstain), elected-only
+- [x] Block production telemetry + QRY yield ticker
+- [ ] Replace the dev harness with real wallet identity (Phase 6)
 
 ## Phase 5 — Module D: QuarryLabs Admin Console
 - [ ] Wallet-gated admin surface + "PHASE 1 MANUAL CONTROL" badge
