@@ -157,19 +157,44 @@ body {
   animation: fade-in 240ms ease-out;
 }
 
-/* Gentle bob for the hero coin. Neutralised by the reduced-motion rule below. */
-@keyframes coin-float {
+/*
+ * Hero coin motion — kept identical to quarrychain-web's `qry-rock` / `qry-bob`
+ * so the token behaves the same across the ecosystem. Rock is a rotateY turn
+ * (a coin pivoting on its axis), not a 2D wobble; it needs `perspective` on an
+ * ancestor to read as 3D. Both are neutralised by the reduced-motion rule below.
+ */
+@keyframes qry-rock {
   0%,
   100% {
-    transform: translateY(0) rotate(-8deg);
+    transform: rotateY(0deg);
+  }
+  25% {
+    transform: rotateY(-30deg);
   }
   50% {
-    transform: translateY(-10px) rotate(-8deg);
+    transform: rotateY(0deg);
+  }
+  75% {
+    transform: rotateY(30deg);
   }
 }
 
-.animate-coin-float {
-  animation: coin-float 4s ease-in-out infinite;
+@keyframes qry-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-qry-rock {
+  animation: qry-rock 6s ease-in-out infinite;
+}
+
+.animate-qry-bob {
+  animation: qry-bob 6s ease-in-out infinite;
 }
 
 /* The spec leans hard on live tickers. Honour reduced-motion. */

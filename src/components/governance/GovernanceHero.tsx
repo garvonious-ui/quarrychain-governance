@@ -8,11 +8,11 @@ import Link from "next/link";
  * aria-hidden, so it carries no meaning a screen reader needs. The float is
  * CSS-only and neutralised by the global reduced-motion rule.
  *
- * Copy note: an earlier draft used "The sustainable bedrock for global finance",
- * lifted from the spec's *Vibe* section — which is tone guidance, not a
- * headline. It read as a company-level slogan, which is the marketing site's
- * job, not this tool's. The headline now states what this page is for:
- * electing the 21, and campaigning for a seat among them.
+ * Copy note: the headline is Alec's, chosen 2026-07-22. An earlier draft used
+ * "The sustainable bedrock for global finance", lifted from the spec's *Vibe*
+ * section — which is tone guidance, not a headline, and read as a company
+ * slogan. The sub-line carries the functional message for both audiences
+ * (delegators and prospective miners), so the headline can stay brand-led.
  */
 export function GovernanceHero() {
   return (
@@ -43,7 +43,7 @@ export function GovernanceHero() {
           </span>
 
           <h1 className="mt-4 text-2xl font-bold leading-tight sm:text-3xl">
-            Elect the 21. Secure the chain.
+            The Digital Quarry, secured by 21 Miners.
           </h1>
           <p className="mt-2 max-w-md text-sm text-panel-ink/70">
             Freeze QRY to vote for the Quarry Miners who produce blocks — or
@@ -70,14 +70,23 @@ export function GovernanceHero() {
           The white token, matching the variant used on quarrychain-web — the
           canonical treatment across the ecosystem. A dark variant is kept at
           quarry-token-dark.svg for use on light surfaces if ever needed.
+
+          Two nested elements on purpose: the outer carries the perspective and
+          the vertical bob, the inner does the rotateY rock. Combining both on a
+          single element would make the transforms fight each other.
         */}
-        {/* eslint-disable-next-line @next/next/no-img-element -- decorative same-origin SVG; next/image would need dangerouslyAllowSVG */}
-        <img
-          src="/assets/quarry-token-white.svg"
-          alt=""
+        <div
+          className="animate-qry-bob hidden shrink-0 sm:block"
+          style={{ perspective: "1000px" }}
           aria-hidden="true"
-          className="animate-coin-float hidden h-44 w-44 shrink-0 drop-shadow-2xl sm:block lg:h-52 lg:w-52"
-        />
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element -- decorative same-origin SVG; next/image would need dangerouslyAllowSVG */}
+          <img
+            src="/assets/quarry-token-white.svg"
+            alt=""
+            className="animate-qry-rock h-44 w-44 drop-shadow-2xl lg:h-52 lg:w-52"
+          />
+        </div>
       </div>
     </section>
   );
