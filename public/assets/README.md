@@ -1,7 +1,8 @@
 ## Delivered
 
 - `quarrychain-logo.png` / `quarrychain-logo.svg` — hexagon Q mark (from quarrychain-web), shown in the nav
-- `quarry-token.svg` — 3D QRY coin, used in the governance hero
+- `quarry-token-white.svg` — 3D QRY coin, **white/silver body — the canonical variant used on quarrychain-web**. Used in the governance hero.
+- `quarry-token-dark.svg` — dark-body variant, kept for use on light surfaces if ever needed
 
 # Brand assets
 

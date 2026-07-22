@@ -8,8 +8,11 @@ import Link from "next/link";
  * aria-hidden, so it carries no meaning a screen reader needs. The float is
  * CSS-only and neutralised by the global reduced-motion rule.
  *
- * Tagline uses the spec's own framing ("sustainable bedrock for global
- * finance").
+ * Copy note: an earlier draft used "The sustainable bedrock for global finance",
+ * lifted from the spec's *Vibe* section — which is tone guidance, not a
+ * headline. It read as a company-level slogan, which is the marketing site's
+ * job, not this tool's. The headline now states what this page is for:
+ * electing the 21, and campaigning for a seat among them.
  */
 export function GovernanceHero() {
   return (
@@ -40,11 +43,11 @@ export function GovernanceHero() {
           </span>
 
           <h1 className="mt-4 text-2xl font-bold leading-tight sm:text-3xl">
-            The sustainable bedrock for global finance.
+            Elect the 21. Secure the chain.
           </h1>
           <p className="mt-2 max-w-md text-sm text-panel-ink/70">
-            Delegated Proof of Stake secured by 21 elected Quarry Miners. Vote,
-            delegate, and earn yield — or run a validator yourself.
+            Freeze QRY to vote for the Quarry Miners who produce blocks — or
+            stake 500,000 QRY and campaign for a seat of your own.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-3">
@@ -63,9 +66,14 @@ export function GovernanceHero() {
           </div>
         </div>
 
+        {/*
+          The white token, matching the variant used on quarrychain-web — the
+          canonical treatment across the ecosystem. A dark variant is kept at
+          quarry-token-dark.svg for use on light surfaces if ever needed.
+        */}
         {/* eslint-disable-next-line @next/next/no-img-element -- decorative same-origin SVG; next/image would need dangerouslyAllowSVG */}
         <img
-          src="/assets/quarry-token.svg"
+          src="/assets/quarry-token-white.svg"
           alt=""
           aria-hidden="true"
           className="animate-coin-float hidden h-44 w-44 shrink-0 drop-shadow-2xl sm:block lg:h-52 lg:w-52"
