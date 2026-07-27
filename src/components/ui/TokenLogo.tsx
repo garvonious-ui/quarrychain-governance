@@ -2,12 +2,14 @@
  * The QRY coin, inline. Alec wants the token mark to appear on the freeze,
  * confirm, and wallet surfaces.
  *
- * Defaults to the dark-body coin, which reads on the light card surfaces these
- * live on; pass variant="white" for dark panels. Decorative, so aria-hidden.
+ * Defaults to the white/silver coin — the canonical variant used across the
+ * ecosystem (Alec's call). Its coloured hexagons and black Q keep it legible on
+ * light card surfaces; pass variant="dark" only if a surface ever needs it.
+ * Decorative, so aria-hidden.
  */
 export function TokenLogo({
   size = 20,
-  variant = "dark",
+  variant = "white",
   className = "",
 }: {
   size?: number;
