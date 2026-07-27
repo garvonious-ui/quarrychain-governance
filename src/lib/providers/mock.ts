@@ -4,6 +4,7 @@ import {
   MOCK_ACTIVE_VALIDATORS,
   MOCK_CANDIDATE_VALIDATORS,
 } from "@/lib/mock/validators";
+import { MOCK_WALLET } from "@/lib/mock/wallet";
 import { checkNodeConnection } from "@/lib/providers/node-check";
 import type { DataProvider } from "@/lib/providers/types";
 import type {
@@ -160,6 +161,10 @@ export function createMockProvider(): DataProvider {
       delegate: () => latency({ txHash: `0x${"de1e6a7e".repeat(8)}` }, 700),
       undelegate: () => latency({ txHash: `0x${"c0ffee11".repeat(8)}` }, 700),
       setAutoCompound: () => latency(undefined, 200),
+    },
+
+    wallet: {
+      getSummary: () => latency(MOCK_WALLET),
     },
 
     governance: {

@@ -16,6 +16,7 @@ import type {
   ProposalVote,
   Validator,
   ValidatorApplication,
+  WalletSummary,
 } from "@/lib/types";
 
 export interface ValidatorRegistryProvider {
@@ -58,6 +59,11 @@ export interface DelegationProvider {
   setAutoCompound(validatorId: string, enabled: boolean): Promise<void>;
 }
 
+export interface WalletProvider {
+  /** Portfolio summary for the Quarry Wallet Dashboard. */
+  getSummary(address?: string): Promise<WalletSummary>;
+}
+
 export interface GovernanceProvider {
   listProposals(): Promise<Proposal[]>;
   castVote(proposalId: string, vote: ProposalVote): Promise<{ txHash: string }>;
@@ -77,6 +83,7 @@ export interface DataProvider {
   telemetry: ChainTelemetryProvider;
   onboarding: OnboardingProvider;
   delegation: DelegationProvider;
+  wallet: WalletProvider;
   governance: GovernanceProvider;
   admin: AdminProvider;
 }

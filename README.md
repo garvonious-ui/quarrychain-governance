@@ -51,7 +51,8 @@ npx tsc --noEmit  # typecheck
 |---|---|
 | `/governance` | Validator registry + network topology (Module A) |
 | `/governance/[id]` | Public miner profile, one-click delegate link |
-| `/voting` | Freeze → Select → Cast → Manage delegation wizard (Module B) |
+| `/voting` | Freeze → Select → Confirm delegation flow, single or split (Module B) |
+| `/wallet` | Quarry Wallet Dashboard — balances + active delegations |
 | `/onboarding` | "Become a Quarry Miner" wizard (Module C) |
 | `/miner` | Validator personal dashboard (Module C) |
 | `/admin` | QuarryLabs control panel (Module D) — not linked from nav |

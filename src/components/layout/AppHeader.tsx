@@ -22,6 +22,7 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
 const NAV = [
   { label: "Governance", href: "/governance" },
   { label: "Voting", href: "/voting" },
+  { label: "Wallet", href: "/wallet" },
   { label: "Explorer", href: "/explorer" },
 ] as const;
 

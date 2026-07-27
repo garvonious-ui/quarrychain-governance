@@ -126,6 +126,57 @@ export interface Delegation {
   autoCompound: boolean;
 }
 
+/* ---- Quarry Wallet Dashboard ---- */
+
+export type TokenSymbol = "QRY" | "QSD" | "USDT";
+
+export interface TokenBalance {
+  symbol: TokenSymbol;
+  name: string;
+  amount: number;
+}
+
+/** An active delegation as shown on the wallet's Manage Pool section. */
+export interface ActiveDelegation {
+  validatorId: string;
+  validatorName: string;
+  iconAsset: string | null;
+  delegatedQry: number;
+  apyPct: number;
+  /** Rewards accrued so far, in QRY. */
+  rewardsEarned: number;
+  autoCompound: boolean;
+}
+
+export type EarningsEventKind = "received" | "compounded" | "dividend";
+
+export interface EarningsEvent {
+  id: string;
+  kind: EarningsEventKind;
+  title: string;
+  detail: string;
+  /** Pre-formatted relative time, e.g. "1 minute ago". */
+  when: string;
+}
+
+/**
+ * Everything the Quarry Wallet Dashboard renders. Modelled on the RWA
+ * Marketplace demo, with the holdings section replaced by active delegations.
+ */
+export interface WalletSummary {
+  address: string;
+  /** Total delegated QRY across all miners. */
+  totalStakedQry: number;
+  /** Change over the last 24h, in QRY. */
+  todayChangeQry: number;
+  todayChangePct: number;
+  /** All-time rewards earned, in QRY. */
+  totalYieldQry: number;
+  balances: TokenBalance[];
+  delegations: ActiveDelegation[];
+  earnings: EarningsEvent[];
+}
+
 export type InfractionKind = "downtime" | "double_sign" | "malicious";
 
 export interface SlashPreset {

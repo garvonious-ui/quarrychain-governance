@@ -116,6 +116,17 @@ and seed/persistent-peer strings (`nodeID@ip:26656`) for the existing IONOS node
 → Off-chain. Needs a small backend to hold pending candidacies until an admin
 approves them (Phase-1 manual permissioning).
 
+### `wallet.getSummary(address)`
+→ Aggregates the connected wallet's view for the Quarry Wallet Dashboard:
+- balances ← `eth_getBalance` (QRY) + ERC-20 `balanceOf` for QSD / USDT-QRC20
+- delegations ← Cosmos staking `/cosmos/staking/v1beta1/delegations/{addr}`,
+  joined with the validator registry for name/APY, plus
+  `/cosmos/distribution/v1beta1/delegators/{addr}/rewards` for rewards earned
+- earnings feed ← recent reward/distribution events for the address
+The "KYC Certified / Accredited Investor / ZKP Protected" badges are
+presentational placeholders from the RWA demo — wire them to real attestation
+state or drop them.
+
 ### `delegation.*`
 → Cosmos staking messages: `MsgDelegate`, `MsgUndelegate`, `MsgWithdrawDelegatorReward`.
 `freeze()` models the Energy/Bandwidth resource concept — confirm whether the
