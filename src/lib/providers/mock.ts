@@ -1,4 +1,5 @@
 import { ACTIVE_SET_SIZE, CHAIN } from "@/lib/chain";
+import { bandwidthFor, energyFor } from "@/lib/voting";
 import {
   MOCK_ACTIVE_VALIDATORS,
   MOCK_CANDIDATE_VALIDATORS,
@@ -153,8 +154,9 @@ export function createMockProvider(): DataProvider {
 
     delegation: {
       listForWallet: () => latency([]),
+      // Ratios match the DPoS demo: Energy 0.1x, Bandwidth 0.3x.
       freeze: (amountQry) =>
-        latency({ energy: amountQry * 1.25, bandwidth: amountQry * 0.85 }, 400),
+        latency({ energy: energyFor(amountQry), bandwidth: bandwidthFor(amountQry) }, 400),
       delegate: () => latency({ txHash: `0x${"de1e6a7e".repeat(8)}` }, 700),
       undelegate: () => latency({ txHash: `0x${"c0ffee11".repeat(8)}` }, 700),
       setAutoCompound: () => latency(undefined, 200),
